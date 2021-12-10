@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import Browse from "./Browse";
-import NavBar from "./NavBar";
 import Focus from "./Focus";
 
 const Body = () => {
@@ -89,12 +88,7 @@ const Body = () => {
         );
     }
 
-    return (
-        <div>
-            <NavBar />
-            {content}
-        </div>
-    );
+    return <div>{content}</div>;
 };
 
 export default Body;

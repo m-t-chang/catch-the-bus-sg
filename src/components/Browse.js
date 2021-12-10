@@ -1,10 +1,12 @@
 import React from "react";
+import Stack from "@mui/material/Stack";
+
 import AddServiceStop from "./AddServiceStop";
 import ArrivalCard from "./ArrivalCard";
 
 const Browse = (props) => {
     return (
-        <div>
+        <Stack spacing={2}>
             {props.data.map((elem) => (
                 <ArrivalCard
                     id={elem.serviceNo + "-" + elem.stop}
@@ -15,7 +17,7 @@ const Browse = (props) => {
                 />
             ))}
             <AddServiceStop handleFormSubmit={props.handleFormSubmit} />
-        </div>
+        </Stack>
     );
 };
 
