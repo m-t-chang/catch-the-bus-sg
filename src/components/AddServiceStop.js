@@ -4,14 +4,6 @@ const AddServiceStop = (props) => {
     const [serviceInput, setServiceInput] = useState("");
     const [stopInput, setStopInput] = useState("");
 
-    function handleServiceChange(event) {
-        setServiceInput(event.target.value);
-    }
-
-    function handleStopChange(event) {
-        setStopInput(event.target.value);
-    }
-
     return (
         <div>
             == ADD NEW ==
@@ -24,13 +16,13 @@ const AddServiceStop = (props) => {
                     type="text"
                     placeholder="Service No."
                     value={serviceInput}
-                    onChange={handleServiceChange}
+                    onChange={(event) => setServiceInput(event.target.value)}
                 />
                 <input
                     type="text"
                     placeholder="Stop"
                     value={stopInput}
-                    onChange={handleStopChange}
+                    onChange={(event) => setStopInput(event.target.value)}
                 />
                 <button type="submit">Track This Stop</button>
             </form>

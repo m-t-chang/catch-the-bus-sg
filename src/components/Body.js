@@ -50,8 +50,26 @@ const Body = () => {
 
     function handleFormSubmit(event, serviceNo, stop) {
         event.preventDefault();
+
+        // validation 1: no empty strings
+        if (serviceNo === "" || stop === "") {
+            console.log("invalid input. Add failed.");
+            return;
+        }
+
+        // validation 2: must be unique
+        if (
+            arrivalData.find(
+                (elem) => elem.serviceNo === serviceNo && elem.stop === stop
+            )
+        ) {
+            console.log("service-stop is already tracked! Add failed.");
+            return;
+        }
+
+        // success
         setArrivalData([...arrivalData, { serviceNo, stop }]);
-        console.log("submit");
+        console.log("Add succeeded");
     }
 
     let content = (
