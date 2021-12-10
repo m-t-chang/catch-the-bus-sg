@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import Button from "@mui/material/Button";
 
 const AddServiceStop = (props) => {
     const [serviceInput, setServiceInput] = useState("");
@@ -24,7 +25,9 @@ const AddServiceStop = (props) => {
                     value={stopInput}
                     onChange={(event) => setStopInput(event.target.value)}
                 />
-                <button type="submit">Track This Stop</button>
+                <Button variant="contained" type="submit">
+                    Track This Stop
+                </Button>
             </form>
         </div>
     );
