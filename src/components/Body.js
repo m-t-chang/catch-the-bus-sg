@@ -40,13 +40,17 @@ const Body = () => {
 
     // TODO: consider renaming "arrivalData" to "trackedServiceStops", since it no longer contains the duration data
     const [arrivalData, setArrivalData] = useState([
+        // {
+        //     serviceNo: "185",
+        //     stop: "28469",
+        // },
+        // {
+        //     serviceNo: "502",
+        //     stop: "03217",
+        // },
         {
-            serviceNo: "185",
+            serviceNo: "187",
             stop: "28469",
-        },
-        {
-            serviceNo: "502",
-            stop: "03217",
         },
     ]);
 

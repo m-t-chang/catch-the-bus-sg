@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import Button from "@mui/material/Button";
 import Card from "@mui/material/Card";
 import { CardActions, CardContent, CardActionArea } from "@mui/material";
@@ -10,45 +10,36 @@ const ArrivalCard = (props) => {
     const [currentTime, setCurrentTime] = useState(Date.now());
     const [arrivalObject, setArrivalObject] = useState({});
 
-    async function fetchArrivals(serviceNo, stop) {
+    // this needs to useCallback, otherwise it will cause an infinite loop with useEffect
+    const fetchArrivals = useCallback(async (serviceNo, stop) => {
+        console.log(`Fetching data for Stop: ${stop}, ServiceNo: ${serviceNo}`);
+
         const response = await fetch(
             `https://arrivelah2.busrouter.sg/?id=${stop}`
         );
-        const myJson = await response.json(); //extract JSON from the http response
+        const myJson = await response.json();
 
-        // update the card with the returned data
-        for (let service of myJson.services) {
-            if (service.no === serviceNo) {
-                // display in mins, rounded down
-                // setDuration(Math.floor(service.next.duration_ms / 60000));
-                setNextTime(Date.parse(service.next.time));
-
-                // card.duration2 = Math.floor(
-                //     service.next2.duration_ms / 60000
-                // );
-                // card.duration3 = Math.floor(
-                //     service.next3.duration_ms / 60000
-                // );
-
-                setArrivalObject(service);
-            }
-        }
-        console.log("Fetch complete");
-    }
-
-    // on mount, update the data
-    useEffect(() => {
-        console.log(
-            `Fetching data for Stop: ${props.data.stop}, ServiceNo: ${props.data.serviceNo}`
+        const arrivalObj = myJson.services.find(
+            (service) => service.no === serviceNo
         );
 
-        // TODO: this should be in try-catch
-        // and per LTA's recommendation, if there's no arrival data, then should check whether bus is in operation,
-        //      and display a message accordingly ("Not in operation" or "no arrival data" )
-        fetchArrivals(props.data.serviceNo, props.data.stop);
-    }, [props.data.serviceNo, props.data.stop]);
+        setArrivalObject(arrivalObj);
+        setNextTime(Date.parse(arrivalObj.next.time));
+    }, []);
 
-    // on mount, start a timer to keep updating
+    // on mount, fetch new arrival data, then setInterval to regularly repeat
+    useEffect(() => {
+        fetchArrivals(props.data.serviceNo, props.data.stop);
+        const intervalId = setInterval(() => {
+            // TODO: this should be in try-catch
+            // and per LTA's recommendation, if there's no arrival data, then should check whether bus is in operation,
+            //      and display a message accordingly ("Not in operation" or "no arrival data" )
+            fetchArrivals(props.data.serviceNo, props.data.stop);
+        }, 60000);
+        return () => clearInterval(intervalId);
+    }, [fetchArrivals, props.data.serviceNo, props.data.stop]);
+
+    // on mount, start a timer to keep updating current time
     useEffect(() => {
         const intervalId = setInterval(() => {
             setCurrentTime(Date.now());
