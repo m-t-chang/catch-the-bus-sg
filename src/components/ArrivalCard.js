@@ -7,6 +7,7 @@ const ArrivalCard = (props) => {
     // TODO: ideally this should be fetching the time instead
     // const [duration, setDuration] = useState("no data");
     const [nextTime, setNextTime] = useState("");
+    const [currentTime, setCurrentTime] = useState(Date.now());
     const [arrivalObject, setArrivalObject] = useState({});
 
     async function fetchArrivals(serviceNo, stop) {
@@ -20,7 +21,7 @@ const ArrivalCard = (props) => {
             if (service.no === serviceNo) {
                 // display in mins, rounded down
                 // setDuration(Math.floor(service.next.duration_ms / 60000));
-                setNextTime(service.next.time);
+                setNextTime(Date.parse(service.next.time));
 
                 // card.duration2 = Math.floor(
                 //     service.next2.duration_ms / 60000
@@ -47,6 +48,23 @@ const ArrivalCard = (props) => {
         fetchArrivals(props.data.serviceNo, props.data.stop);
     }, [props.data.serviceNo, props.data.stop]);
 
+    // on mount, start a timer to keep updating
+    useEffect(() => {
+        const intervalId = setInterval(() => {
+            setCurrentTime(Date.now());
+        }, 5000);
+
+        return () => clearInterval(intervalId);
+    }, []);
+
+    // create the HTML element to display time until arrival or an error message
+    function timeDisplay() {
+        if (nextTime) {
+            return <p>{Math.floor((nextTime - currentTime) / 60000)} mins</p>;
+        }
+        return <p>No arrival data</p>;
+    }
+
     return (
         <Card onClick={props.handleCardOnClick}>
             <CardActionArea>
@@ -58,12 +76,7 @@ const ArrivalCard = (props) => {
                     <p>Arrives at: {nextTime}</p>
                     <p>as Unix: {Date.parse(nextTime)}</p>
                     <p>Time right now: {Date.now()}</p> */}
-                    <p>
-                        mins until:{" "}
-                        {Math.floor(
-                            (Date.parse(nextTime) - Date.now()) / 60000
-                        )}
-                    </p>
+                    {timeDisplay()}
                 </CardContent>
             </CardActionArea>
             <CardActions>
