@@ -1,31 +1,52 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Browse from "./Browse";
 import Focus from "./Focus";
 
 const Body = () => {
     const [activeView, setActiveView] = useState("browse");
+    const [staticData, setStaticData] = useState({
+        busServices: "",
+        busRoutes: "",
+        busStops: "",
+    });
 
+    // on Mount, read in static bus data
+    // need to define another async function and run it b/c the useEffect function must be synchronous
+    useEffect(() => {
+        async function fetchStaticData() {
+            const res = await fetch("bus-reference-data.json", {
+                headers: {
+                    "Content-Type": "application/json",
+                    Accept: "application/json",
+                },
+            });
+            const datasetList = await res.json();
+
+            setStaticData({
+                busServices: datasetList[0].data,
+                busRoutes: datasetList[1].data,
+                busStops: datasetList[2].data,
+            });
+        }
+        fetchStaticData();
+    }, []);
+
+    // when staticData gets updated, do this
+    useEffect(() => {
+        console.log(staticData);
+
+        // load the static data into the autocomplete
+    }, [staticData]);
+
+    // TODO: consider renaming "arrivalData" to "trackedServiceStops", since it no longer contains the duration data
     const [arrivalData, setArrivalData] = useState([
         {
-            serviceNo: "123",
-            stop: "02314",
-            duration: "22",
-            duration2: "34",
-            duration3: "48",
+            serviceNo: "185",
+            stop: "28469",
         },
         {
-            serviceNo: "99",
-            stop: "44132",
-            duration: "11",
-            duration2: "34",
-            duration3: "48",
-        },
-        {
-            serviceNo: "334",
-            stop: "77832",
-            duration: "2",
-            duration2: "34",
-            duration3: "48",
+            serviceNo: "502",
+            stop: "03217",
         },
     ]);
 
