@@ -28,13 +28,6 @@ const Body = () => {
         fetchStaticData();
     }, []);
 
-    // when staticData gets updated, do this
-    useEffect(() => {
-        console.log(staticData);
-
-        // load the static data into the autocomplete
-    }, [staticData]);
-
     // TODO: consider renaming "arrivalData" to "trackedServiceStops", since it no longer contains the duration data
     const [arrivalData, setArrivalData] = useState([
         // {

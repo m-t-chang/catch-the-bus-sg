@@ -8,14 +8,14 @@ import { v4 as uuidv4 } from "uuid";
 const AddServiceStop = (props) => {
     const [serviceInput, setServiceInput] = useState("");
     const [stopInput, setStopInput] = useState("");
-    const [inputValue, setInputValue] = useState("");
     const [serviceInputText, setServiceInputText] = useState("");
+    const [stopInputText, setStopInputText] = useState("");
     const staticData = useContext(StaticDataContext);
 
     // define a state for the options that are appearing... it's not static!
     // need one for stops and services each
-    const [stopsOnRoute, setStopsOnRoute] = useState("");
-    const [servicesAtStop, setServicesAtStop] = useState("");
+    const [stopsOnRoute, setStopsOnRoute] = useState([]);
+    const [servicesAtStop, setServicesAtStop] = useState([]);
 
     // on input change
     //  if it's valid, then filter the other input
@@ -29,7 +29,7 @@ const AddServiceStop = (props) => {
         if (serviceInputText === "") {
             // this prevents error if staticData is not loaded. Which always happens on the first render of the app loading
             setStopsOnRoute(
-                staticData.busStops.data ? staticData.busStops.data : ""
+                staticData.busStops.data ? staticData.busStops.data : []
             );
             return;
         }
@@ -57,51 +57,52 @@ const AddServiceStop = (props) => {
         // console.log("newStopsOnRoute", newStopsOnRoute);
 
         setStopsOnRoute(newStopsOnRoute);
-    }, [serviceInput, staticData]);
+    }, [serviceInputText, serviceInput, staticData]);
 
-    /*
-    function updateServicesForStop(e) {
-        //console.log("updating bus services for ", e.target.value);
-
+    // update services based on stop input
+    useEffect(() => {
+        // if staticData is not loaded yet
+        if (!staticData.busServices.data) {
+            setServicesAtStop([]);
+            return;
+        }
         // if input is blank, then display all services
-        if (e.target.value === "") {
-            populateBusServicesMenu(busServices);
+        if (stopInputText === "") {
+            setServicesAtStop(staticData.busServices.data);
             return;
         }
 
         // use reduce to get an array of busServiceNo, instead of filter which gives
         // an array of BusRoute objects
-        const serviceNosAtStop = busRoutes.reduce((prev, elem) => {
-            if (elem.BusStopCode === e.target.value) {
-                prev.push(elem.ServiceNo);
-            }
-            return prev;
-        }, []);
-        //console.log(serviceNosAtStop);
+        const serviceNosAtStop = staticData.busRoutes.data.reduce(
+            (prev, elem) => {
+                if (elem.BusStopCode === stopInput.BusStopCode) {
+                    prev.push(elem.ServiceNo);
+                }
+                return prev;
+            },
+            []
+        );
 
         // turn the array of serviceNos into BusService objects
-        const servicesAtStop = busServices.filter((service) =>
-            serviceNosAtStop.includes(service.ServiceNo)
+        const newServicesAtStop = staticData.busServices.data.filter(
+            (service) => serviceNosAtStop.includes(service.ServiceNo)
         );
-        //console.log("services at stop", servicesAtStop);
 
-        populateBusServicesMenu(servicesAtStop);
-    }
-*/
-    ///////////////
+        setServicesAtStop(newServicesAtStop);
+    }, [stopInputText, stopInput, staticData]);
 
-    console.log("at root, stopsOnRoute", stopsOnRoute);
+    // console.log("at root, stopsOnRoute", stopsOnRoute);
     let busStopAutocomplete = "";
     if (staticData.busStops.data) {
         busStopAutocomplete = (
             <Autocomplete
                 value={stopInput} // this matches the Options, in this case, an object
                 onChange={(event, newValue) => setStopInput(newValue)}
-                // inputValue={inputValue} //note that this is a string
-                // onInputChange={(event, newInputValue) => {
-                //     setInputValue(newInputValue);
-                //     console.log(inputValue);
-                // }}
+                inputValue={stopInputText} //note that this is a string
+                onInputChange={(event, newInputValue) =>
+                    setStopInputText(newInputValue)
+                }
                 disablePortal
                 id="busStop-combo-box"
                 // options={staticData.busStops.data}
@@ -159,7 +160,7 @@ const AddServiceStop = (props) => {
                 }
                 disablePortal
                 id="busService-combo-box"
-                options={staticData.busServices.data}
+                options={servicesAtStop}
                 getOptionLabel={(option) =>
                     option.ServiceNo
                         ? `${option.ServiceNo} - ${option.Direction}`
@@ -206,26 +207,17 @@ const AddServiceStop = (props) => {
         <div>
             == ADD NEW ==
             <form
-                onSubmit={(event) =>
-                    props.handleFormSubmit(event, serviceInput, stopInput)
-                }
+                onSubmit={(event) => {
+                    props.handleFormSubmit(event, serviceInput, stopInput);
+                    setServiceInput("");
+                    setStopInput("");
+                }}
             >
                 {busStopAutocomplete}
                 {busServiceAutocomplete}
                 {JSON.stringify(serviceInput)}
-                {inputValue}
-                {/* <input
-                    type="text"
-                    placeholder="Service No."
-                    value={serviceInput}
-                    onChange={(event) => setServiceInput(event.target.value)}
-                /> */}
-                {/* <input
-                    type="text"
-                    placeholder="Stop"
-                    value={stopInput}
-                    onChange={(event) => setStopInput(event.target.value)}
-                /> */}
+                {stopInputText}
+                {serviceInputText}
                 <Button variant="contained" type="submit">
                     Track This Stop
                 </Button>
