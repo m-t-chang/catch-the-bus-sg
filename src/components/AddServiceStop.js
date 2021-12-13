@@ -3,6 +3,7 @@ import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
 import StaticDataContext from "./StaticDataContext";
+import { v4 as uuidv4 } from "uuid";
 
 const AddServiceStop = (props) => {
     const [serviceInput, setServiceInput] = useState("");
@@ -56,7 +57,7 @@ const AddServiceStop = (props) => {
         // console.log("newStopsOnRoute", newStopsOnRoute);
 
         setStopsOnRoute(newStopsOnRoute);
-    }, [serviceInput]);
+    }, [serviceInput, staticData]);
 
     /*
     function updateServicesForStop(e) {
@@ -89,7 +90,7 @@ const AddServiceStop = (props) => {
 */
     ///////////////
 
-    // console.log("at root, stopsOnRoute", stopsOnRoute);
+    console.log("at root, stopsOnRoute", stopsOnRoute);
     let busStopAutocomplete = "";
     if (staticData.busStops.data) {
         busStopAutocomplete = (
@@ -113,7 +114,7 @@ const AddServiceStop = (props) => {
                 // renderOption based on https://stackoverflow.com/questions/69395945/how-can-i-add-unique-keys-to-react-mui-autocomplete-component
                 renderOption={(props, option) => {
                     return (
-                        <li {...props} key={option.BusStopCode}>
+                        <li {...props} key={uuidv4()}>
                             {option.RoadName
                                 ? `${option.RoadName} - ${option.Description}`
                                 : ""}
@@ -167,10 +168,7 @@ const AddServiceStop = (props) => {
                 // renderOption based on https://stackoverflow.com/questions/69395945/how-can-i-add-unique-keys-to-react-mui-autocomplete-component
                 renderOption={(props, option) => {
                     return (
-                        <li
-                            {...props}
-                            key={`${option.ServiceNo} - ${option.Direction}`}
-                        >
+                        <li {...props} key={uuidv4()}>
                             {option.ServiceNo
                                 ? `${option.ServiceNo} - ${option.Direction}`
                                 : ""}
