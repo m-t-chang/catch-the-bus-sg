@@ -1,14 +1,16 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback, useContext } from "react";
 import Button from "@mui/material/Button";
 import Card from "@mui/material/Card";
 import { CardActions, CardContent, CardActionArea } from "@mui/material";
 
+import StaticDataContext from "./StaticDataContext";
+
 const ArrivalCard = (props) => {
-    // TODO: ideally this should be fetching the time instead
-    // const [duration, setDuration] = useState("no data");
     const [nextTime, setNextTime] = useState("");
     const [currentTime, setCurrentTime] = useState(Date.now());
     const [arrivalObject, setArrivalObject] = useState({});
+    const [busStop, setBusStop] = useState({});
+    const staticData = useContext(StaticDataContext);
 
     // this needs to useCallback, otherwise it will cause an infinite loop with useEffect
     const fetchArrivals = useCallback(async (serviceNo, stop) => {
@@ -48,6 +50,21 @@ const ArrivalCard = (props) => {
         return () => clearInterval(intervalId);
     }, []);
 
+    // when staticData loads, get the bus stop data
+    useEffect(() => {
+        if (staticData.busStops) {
+            console.log(staticData.busStops);
+            console.log(!staticData.busStops);
+            setBusStop(
+                staticData.busStops.data.find(
+                    (stop) => stop.BusStopCode === props.data.stop
+                )
+            );
+        } else {
+            setBusStop({});
+        }
+    }, [staticData]);
+
     // create the HTML element to display time until arrival or an error message
     function timeDisplay() {
         if (nextTime) {
@@ -68,6 +85,9 @@ const ArrivalCard = (props) => {
                 <CardContent>
                     <h2>
                         {props.data.serviceNo} at Stop: {props.data.stop}
+                    </h2>
+                    <h2>
+                        {busStop.RoadName} - {busStop.Description}
                     </h2>
                     {/* <p>Mins: {duration}</p>
                     <p>Arrives at: {nextTime}</p>
