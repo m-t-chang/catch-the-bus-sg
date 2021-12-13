@@ -1,9 +1,10 @@
+import { v4 as uuidv4 } from "uuid";
 import React, { useState, useContext, useEffect } from "react";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
 import StaticDataContext from "./StaticDataContext";
-import { v4 as uuidv4 } from "uuid";
+import LocationDataContext from "./LocationDataContext";
 
 const AddServiceStop = (props) => {
     const [serviceInput, setServiceInput] = useState(null);
@@ -11,6 +12,7 @@ const AddServiceStop = (props) => {
     const [serviceInputText, setServiceInputText] = useState("");
     const [stopInputText, setStopInputText] = useState("");
     const staticData = useContext(StaticDataContext);
+    const locationData = useContext(LocationDataContext);
 
     // define a state for the options that are appearing... it's not static!
     // need one for stops and services each
@@ -217,6 +219,8 @@ const AddServiceStop = (props) => {
                 {JSON.stringify(serviceInput)}
                 {stopInputText}
                 {serviceInputText}
+                myLAT: {locationData.lat}
+                myLON: {locationData.lon}
                 <Button variant="contained" type="submit">
                     Track This Stop
                 </Button>

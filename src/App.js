@@ -6,12 +6,18 @@ import LoadingScreen from "./components/LoadingScreen";
 import NavBar from "./components/NavBar";
 
 import StaticDataContext from "./components/StaticDataContext";
+import LocationDataContext from "./components/LocationDataContext";
 
 function App() {
     const [staticData, setStaticData] = useState({
         busServices: "",
         busRoutes: "",
         busStops: "",
+    });
+
+    const [locationData, setLocationData] = useState({
+        lat: "",
+        lon: "",
     });
 
     // on Mount, read in static bus data
@@ -31,14 +37,20 @@ function App() {
         fetchStaticData();
     }, []);
 
+    useEffect(() => {
+        setLocationData({ lat: 1, lon: 2 });
+    }, []);
+
     return (
         <StaticDataContext.Provider value={staticData}>
-            <Container maxWidth="xs" sx={{ padding: 0 }}>
-                <LoadingScreen />
+            <LocationDataContext.Provider value={locationData}>
+                <Container maxWidth="xs" sx={{ padding: 0 }}>
+                    <LoadingScreen />
 
-                <NavBar />
-                <Body />
-            </Container>
+                    <NavBar />
+                    <Body />
+                </Container>
+            </LocationDataContext.Provider>
         </StaticDataContext.Provider>
     );
 }

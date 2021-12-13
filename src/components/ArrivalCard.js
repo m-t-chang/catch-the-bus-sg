@@ -4,6 +4,7 @@ import Card from "@mui/material/Card";
 import { CardActions, CardContent, CardActionArea } from "@mui/material";
 
 import StaticDataContext from "./StaticDataContext";
+import LocationDataContext from "./LocationDataContext";
 
 const ArrivalCard = (props) => {
     const [nextTime, setNextTime] = useState("");
@@ -11,6 +12,7 @@ const ArrivalCard = (props) => {
     const [arrivalObject, setArrivalObject] = useState({});
     const [busStop, setBusStop] = useState({});
     const staticData = useContext(StaticDataContext);
+    const locationData = useContext(LocationDataContext);
 
     // this needs to useCallback, otherwise it will cause an infinite loop with useEffect
     const fetchArrivals = useCallback(async (serviceNo, stop) => {
@@ -53,8 +55,8 @@ const ArrivalCard = (props) => {
     // when staticData loads, get the bus stop data
     useEffect(() => {
         if (staticData.busStops) {
-            console.log(staticData.busStops);
-            console.log(!staticData.busStops);
+            // console.log(staticData.busStops);
+            // console.log(!staticData.busStops);
             setBusStop(
                 staticData.busStops.data.find(
                     (stop) => stop.BusStopCode === props.data.stop
@@ -92,6 +94,8 @@ const ArrivalCard = (props) => {
                     {timeDisplay()}
                     {busStop.Latitude}
                     {busStop.Longitude}
+                    myLAT: {locationData.lat}
+                    myLON: {locationData.lon}
                 </CardContent>
             </CardActionArea>
             <CardActions>

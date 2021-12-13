@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
@@ -14,8 +14,11 @@ import ListItemText from "@mui/material/ListItemText";
 import InboxIcon from "@mui/icons-material/MoveToInbox";
 import MailIcon from "@mui/icons-material/Mail";
 
+import LocationDataContext from "./LocationDataContext";
+
 export default function NavBar() {
     const [drawerOpen, setDrawerOpen] = useState(false);
+    const locationData = useContext(LocationDataContext);
 
     const navMenu = (
         <Box
@@ -44,6 +47,7 @@ export default function NavBar() {
                     <ListItemText primary={"Spam"} />
                 </ListItem>
             </List>
+            Location: {JSON.stringify(locationData)}
         </Box>
     );
 
