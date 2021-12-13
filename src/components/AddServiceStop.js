@@ -17,20 +17,19 @@ const AddServiceStop = (props) => {
     const [stopsOnRoute, setStopsOnRoute] = useState([]);
     const [servicesAtStop, setServicesAtStop] = useState([]);
 
-    // on input change
-    //  if it's valid, then filter the other input
-    //  need to refer to BusRoutes
-
     // update stops based on service input
     useEffect(() => {
         // console.log("updating stops for service ", serviceInput);
         // console.log(serviceInputText);
-        // if input is blank, then display all stops
-        if (serviceInputText === "") {
-            // this prevents error if staticData is not loaded. Which always happens on the first render of the app loading
-            setStopsOnRoute(
-                staticData.busStops.data ? staticData.busStops.data : []
-            );
+
+        // if staticData is not loaded yet
+        if (!staticData.busStops.data) {
+            setStopsOnRoute([]);
+            return;
+        }
+        // if input is blank, then display all services
+        if (serviceInput === "" || serviceInput === null) {
+            setStopsOnRoute(staticData.busStops.data);
             return;
         }
 
@@ -57,7 +56,7 @@ const AddServiceStop = (props) => {
         // console.log("newStopsOnRoute", newStopsOnRoute);
 
         setStopsOnRoute(newStopsOnRoute);
-    }, [serviceInputText, serviceInput, staticData]);
+    }, [serviceInput, staticData]);
 
     // update services based on stop input
     useEffect(() => {
@@ -67,7 +66,7 @@ const AddServiceStop = (props) => {
             return;
         }
         // if input is blank, then display all services
-        if (stopInputText === "") {
+        if (stopInput === "" || stopInput === null) {
             setServicesAtStop(staticData.busServices.data);
             return;
         }
@@ -90,7 +89,7 @@ const AddServiceStop = (props) => {
         );
 
         setServicesAtStop(newServicesAtStop);
-    }, [stopInputText, stopInput, staticData]);
+    }, [stopInput, staticData]);
 
     // console.log("at root, stopsOnRoute", stopsOnRoute);
     let busStopAutocomplete = "";
