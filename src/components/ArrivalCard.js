@@ -51,7 +51,13 @@ const ArrivalCard = (props) => {
     // create the HTML element to display time until arrival or an error message
     function timeDisplay() {
         if (nextTime) {
-            return <p>{Math.floor((nextTime - currentTime) / 60000)} mins</p>;
+            if (nextTime > currentTime) {
+                return (
+                    <p>{Math.floor((nextTime - currentTime) / 60000)} mins</p>
+                );
+            } else {
+                return <p>0 mins</p>;
+            }
         }
         return <p>No arrival data</p>;
     }
