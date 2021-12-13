@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Browse from "./Browse";
 import Focus from "./Focus";
+import StaticDataContext from "./StaticDataContext";
 
 const Body = () => {
     const [activeView, setActiveView] = useState("browse");
@@ -20,13 +21,9 @@ const Body = () => {
                     Accept: "application/json",
                 },
             });
-            const datasetList = await res.json();
+            const LTADataMall = await res.json();
 
-            setStaticData({
-                busServices: datasetList[0].data,
-                busRoutes: datasetList[1].data,
-                busStops: datasetList[2].data,
-            });
+            setStaticData(LTADataMall);
         }
         fetchStaticData();
     }, []);
@@ -72,27 +69,30 @@ const Body = () => {
         setActiveView("browse");
     }
 
-    function handleFormSubmit(event, serviceNo, stop) {
+    function handleFormSubmit(event, serviceNoObj, stopObj) {
         event.preventDefault();
 
-        // validation 1: no empty strings
-        if (serviceNo === "" || stop === "") {
-            console.log("invalid input. Add failed.");
-            return;
-        }
-
-        // validation 2: must be unique
-        if (
-            arrivalData.find(
-                (elem) => elem.serviceNo === serviceNo && elem.stop === stop
-            )
-        ) {
-            console.log("service-stop is already tracked! Add failed.");
-            return;
-        }
+        // THIS VALIDATION CODE WAS WRITTEN WHEN THE ARGUMENTS WERE STRINGS, NOT OBJECTS
+        // // validation 1: no empty strings
+        // if (serviceNo === "" || stop === "") {
+        //     console.log("invalid input. Add failed.");
+        //     return;
+        // }
+        // // validation 2: must be unique
+        // if (
+        //     arrivalData.find(
+        //         (elem) => elem.serviceNo === serviceNo && elem.stop === stop
+        //     )
+        // ) {
+        //     console.log("service-stop is already tracked! Add failed.");
+        //     return;
+        // }
 
         // success
-        setArrivalData([...arrivalData, { serviceNo, stop }]);
+        setArrivalData([
+            ...arrivalData,
+            { serviceNo: serviceNoObj.ServiceNo, stop: stopObj.BusStopCode },
+        ]);
         console.log("Add succeeded");
     }
 
@@ -113,7 +113,13 @@ const Body = () => {
         );
     }
 
-    return <div>{content}</div>;
+    return (
+        <div>
+            <StaticDataContext.Provider value={staticData}>
+                {content}
+            </StaticDataContext.Provider>
+        </div>
+    );
 };
 
 export default Body;

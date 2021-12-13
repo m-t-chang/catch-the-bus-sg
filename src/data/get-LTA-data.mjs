@@ -1,17 +1,12 @@
 "use strict";
 /*
 
-The purpose of this file is to prepare the static data.
-
-The script will create 3 .json files, which the app will use.
-
-
+The purpose of this file is to prepare the static bus data.
+The script will create 1 .json file, which the app will use.
 This file is .mjs to allow NodeJS to use import function.
 
 To run this file, use this command in terminal
-
       API_ACCOUNT_KEY=<account key, no quotes> node <filename>
-
 
 Assumptions:
 - LTA's API call returns a JSON object, with key "metadata" and "value". 
@@ -25,25 +20,24 @@ import fetch from "node-fetch";
 import * as fs from "fs"; // for writing the .json file
 
 // define variables
-// NOTE: the order of datasets is hard-coded! Don't change it.
-const datasetList = [
-    {
+const LTADataMall = {
+    busServices: {
         name: "Bus Services",
         endpoint: "http://datamall2.mytransport.sg/ltaodataservice/BusServices",
         data: [],
     },
-    {
+    busRoutes: {
         name: "Bus Routes",
         endpoint: "http://datamall2.mytransport.sg/ltaodataservice/BusRoutes",
         data: [],
     },
-    {
+    busStops: {
         name: "Bus Stops",
         endpoint: "http://datamall2.mytransport.sg/ltaodataservice/BusStops",
         data: [],
     },
-];
-const outputFileName = "data/bus-reference-data.json";
+};
+const outputFileName = "bus-reference-data.json";
 
 ////////////////////////////////////////////////////////////
 // Get data from API
@@ -59,7 +53,7 @@ here, since this code is only run once.
 */
 
 // loop through the 3 data sets to retrieve, transform, and save the data
-for (const dataset of datasetList) {
+for (const [key, dataset] of Object.entries(LTADataMall)) {
     // get the data, 500 rows at a time
     let rowsRemainingFlag = true;
     let skipRows = 0;
@@ -91,8 +85,16 @@ for (const dataset of datasetList) {
     }
 }
 
+// // WIP: This code does not work. Decided to use "getOptionLabel" in MUI instead
+// // create an object for autocomplete
+// Object.assign(LTADataMall, { busStopsForAutocomplete: LTADataMall.busStops });
+// LTADataMall.busStopsForAutocomplete = {
+//     label: `${RoadName} - ${Description}`,
+//     BusStopCode: BusStopCode,
+// };
+
 // save the data into one JSON file
-fs.writeFile(outputFileName, JSON.stringify(datasetList), (err) => {
+fs.writeFile(outputFileName, JSON.stringify(LTADataMall), (err) => {
     if (err) {
         throw err;
     }
