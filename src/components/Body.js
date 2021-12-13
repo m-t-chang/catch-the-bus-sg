@@ -1,32 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import Browse from "./Browse";
 import Focus from "./Focus";
-import StaticDataContext from "./StaticDataContext";
 
 const Body = () => {
     const [activeView, setActiveView] = useState("browse");
-    const [staticData, setStaticData] = useState({
-        busServices: "",
-        busRoutes: "",
-        busStops: "",
-    });
-
-    // on Mount, read in static bus data
-    // need to define another async function and run it b/c the useEffect function must be synchronous
-    useEffect(() => {
-        async function fetchStaticData() {
-            const res = await fetch("bus-reference-data.json", {
-                headers: {
-                    "Content-Type": "application/json",
-                    Accept: "application/json",
-                },
-            });
-            const LTADataMall = await res.json();
-
-            setStaticData(LTADataMall);
-        }
-        fetchStaticData();
-    }, []);
 
     // TODO: consider renaming "arrivalData" to "trackedServiceStops", since it no longer contains the duration data
     const [arrivalData, setArrivalData] = useState([
@@ -106,13 +83,7 @@ const Body = () => {
         );
     }
 
-    return (
-        <div>
-            <StaticDataContext.Provider value={staticData}>
-                {content}
-            </StaticDataContext.Provider>
-        </div>
-    );
+    return <div>{content}</div>;
 };
 
 export default Body;

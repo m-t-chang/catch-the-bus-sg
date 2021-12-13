@@ -89,11 +89,9 @@ const ArrivalCard = (props) => {
                     <h2>
                         {busStop.RoadName} - {busStop.Description}
                     </h2>
-                    {/* <p>Mins: {duration}</p>
-                    <p>Arrives at: {nextTime}</p>
-                    <p>as Unix: {Date.parse(nextTime)}</p>
-                    <p>Time right now: {Date.now()}</p> */}
                     {timeDisplay()}
+                    {busStop.Latitude}
+                    {busStop.Longitude}
                 </CardContent>
             </CardActionArea>
             <CardActions>
