@@ -6,7 +6,7 @@ import NavBar from "./components/NavBar";
 
 function App() {
     return (
-        <Container maxWidth="xs">
+        <Container maxWidth="xs" sx={{ padding: 0 }}>
             <LoadingScreen />
             <NavBar />
             <Body />
