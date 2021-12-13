@@ -6,8 +6,8 @@ import StaticDataContext from "./StaticDataContext";
 import { v4 as uuidv4 } from "uuid";
 
 const AddServiceStop = (props) => {
-    const [serviceInput, setServiceInput] = useState("");
-    const [stopInput, setStopInput] = useState("");
+    const [serviceInput, setServiceInput] = useState(null);
+    const [stopInput, setStopInput] = useState(null);
     const [serviceInputText, setServiceInputText] = useState("");
     const [stopInputText, setStopInputText] = useState("");
     const staticData = useContext(StaticDataContext);
