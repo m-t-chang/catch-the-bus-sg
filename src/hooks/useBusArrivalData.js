@@ -5,6 +5,10 @@ Some background...
 
 This custom hook was created to reuse the bus arrival fetching because 
 it's needed in both "ArrivalCard" and "Focus".
+
+The hook useArrivalData returns an "arrivalObject" which is a state and
+contains the necessary data. It will also self-update on an interval,
+defined here.
 */
 
 // create the HTML element to display time until arrival or an error message
@@ -19,8 +23,8 @@ export function timeDisplay(nextTime, currentTime) {
     return <p>No arrival data</p>;
 }
 
-export default function useArrivalData(serviceNoInFocus, stopInFocus) {
-    const [arrivalObject, setArrivalObject] = useState({});
+export default function useBusArrivalData(serviceNoInFocus, stopInFocus) {
+    const [busArrival, setBusArrival] = useState({});
 
     // this needs to useCallback, otherwise it will cause an infinite loop with useEffect
     const fetchArrivals = useCallback(async (serviceNo, stop) => {
@@ -37,7 +41,7 @@ export default function useArrivalData(serviceNoInFocus, stopInFocus) {
 
         arrivalObj.next.time = Date.parse(arrivalObj.next.time);
 
-        setArrivalObject(arrivalObj);
+        setBusArrival(arrivalObj);
     }, []);
 
     // on mount, fetch new arrival data, then setInterval to regularly repeat
@@ -52,5 +56,5 @@ export default function useArrivalData(serviceNoInFocus, stopInFocus) {
         return () => clearInterval(intervalId);
     }, [fetchArrivals, serviceNoInFocus, stopInFocus]);
 
-    return arrivalObject;
+    return busArrival;
 }

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback, useContext } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import Button from "@mui/material/Button";
 import Card from "@mui/material/Card";
 import { CardActions, CardContent, CardActionArea } from "@mui/material";
@@ -6,11 +6,11 @@ import { CardActions, CardContent, CardActionArea } from "@mui/material";
 import StaticDataContext from "./StaticDataContext";
 //import LocationDataContext from "./LocationDataContext";
 
-import useArrivalData, { timeDisplay } from "../hooks/useArrivalData";
+import useBusArrivalData, { timeDisplay } from "../hooks/useBusArrivalData";
 
 const ArrivalCard = (props) => {
     const [currentTime, setCurrentTime] = useState(Date.now());
-    const arrivalObject = useArrivalData(props.data.serviceNo, props.data.stop);
+    const busArrival = useBusArrivalData(props.data.serviceNo, props.data.stop);
     const [busStop, setBusStop] = useState({});
     const staticData = useContext(StaticDataContext);
     //const locationData = useContext(LocationDataContext);
@@ -49,7 +49,7 @@ const ArrivalCard = (props) => {
                     <h2>
                         {busStop.RoadName} - {busStop.Description}
                     </h2>
-                    {timeDisplay(arrivalObject.next?.time, currentTime)}
+                    {timeDisplay(busArrival.next?.time, currentTime)}
                     {/* {busStop.Latitude}
                     {busStop.Longitude} */}
                     <p>Distance: {busStop.distanceFromUser} km</p>
