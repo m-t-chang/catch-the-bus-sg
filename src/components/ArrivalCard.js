@@ -21,12 +21,12 @@ const ArrivalCard = (props) => {
                         {props.data.serviceNo} at Stop: {props.data.stop}
                     </h2>
                     <h2>
-                        {busStop.RoadName} - {busStop.Description}
+                        {busStop?.RoadName} - {busStop?.Description}
                     </h2>
-                    {timeDisplay(busArrival.next?.time, currentTime)}
+                    {timeDisplay(busArrival?.next?.time, currentTime)}
                     {/* {busStop.Latitude}
                     {busStop.Longitude} */}
-                    <p>Distance: {busStop.distanceFromUser} km</p>
+                    <p>Distance: {busStop?.distanceFromUser} km</p>
                     {/* myLAT: {locationData.lat}
                     myLON: {locationData.lon} */}
                 </CardContent>
