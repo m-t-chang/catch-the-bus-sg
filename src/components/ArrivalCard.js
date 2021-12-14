@@ -3,26 +3,20 @@ import Button from "@mui/material/Button";
 import Card from "@mui/material/Card";
 import { CardActions, CardContent, CardActionArea } from "@mui/material";
 
+// contexts
 import StaticDataContext from "./StaticDataContext";
 //import LocationDataContext from "./LocationDataContext";
 
+// hooks
 import useBusArrivalData, { timeDisplay } from "../hooks/useBusArrivalData";
+import useCurrentTime from "../hooks/useCurrentTime";
 
 const ArrivalCard = (props) => {
-    const [currentTime, setCurrentTime] = useState(Date.now());
+    const currentTime = useCurrentTime();
     const busArrival = useBusArrivalData(props.data.serviceNo, props.data.stop);
     const [busStop, setBusStop] = useState({});
     const staticData = useContext(StaticDataContext);
     //const locationData = useContext(LocationDataContext);
-
-    // on mount, start a timer to keep updating current time
-    useEffect(() => {
-        const intervalId = setInterval(() => {
-            setCurrentTime(Date.now());
-        }, 5000);
-
-        return () => clearInterval(intervalId);
-    }, []);
 
     // when staticData loads, get the bus stop data
     useEffect(() => {
