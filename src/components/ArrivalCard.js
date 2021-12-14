@@ -92,10 +92,11 @@ const ArrivalCard = (props) => {
                         {busStop.RoadName} - {busStop.Description}
                     </h2>
                     {timeDisplay()}
-                    {busStop.Latitude}
-                    {busStop.Longitude}
-                    myLAT: {locationData.lat}
-                    myLON: {locationData.lon}
+                    {/* {busStop.Latitude}
+                    {busStop.Longitude} */}
+                    <p>Distance: {busStop.distanceFromUser} km</p>
+                    {/* myLAT: {locationData.lat}
+                    myLON: {locationData.lon} */}
                 </CardContent>
             </CardActionArea>
             <CardActions>
