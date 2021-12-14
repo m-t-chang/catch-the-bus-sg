@@ -8,6 +8,8 @@ import NavBar from "./components/NavBar";
 import StaticDataContext from "./components/StaticDataContext";
 import LocationDataContext from "./components/LocationDataContext";
 
+import haversineDistance from "./haversine-distnace";
+
 function App() {
     const [staticData, setStaticData] = useState({
         busServices: "",
@@ -53,6 +55,28 @@ function App() {
             }
         );
     }, []);
+
+    // when location and staticData are both loaded, then update staticData with the distance
+    useEffect(() => {
+        console.log("adding distances to bus stops");
+
+        // abort if either dataset doesn't exist
+        if (!staticData.busStops.data || !locationData.lat) return;
+
+        // calculate distance to all stops and save that info
+        staticData.busStops.data.forEach(
+            (busStop) =>
+                (busStop.distanceFromUser = haversineDistance(
+                    [locationData.lat, locationData.lon],
+                    [busStop.Latitude, busStop.Longitude]
+                ))
+        );
+
+        // sort the busStops array by distance
+        staticData.busStops.data.sort(
+            (a, b) => a.distanceFromUser - b.distanceFromUser
+        );
+    }, [staticData, locationData]);
 
     return (
         <StaticDataContext.Provider value={staticData}>
