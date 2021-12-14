@@ -6,42 +6,14 @@ import { CardActions, CardContent, CardActionArea } from "@mui/material";
 import StaticDataContext from "./StaticDataContext";
 //import LocationDataContext from "./LocationDataContext";
 
+import useArrivalData, { timeDisplay } from "../hooks/useArrivalData";
+
 const ArrivalCard = (props) => {
-    const [nextTime, setNextTime] = useState("");
     const [currentTime, setCurrentTime] = useState(Date.now());
-    const [arrivalObject, setArrivalObject] = useState({});
+    const arrivalObject = useArrivalData(props.data.serviceNo, props.data.stop);
     const [busStop, setBusStop] = useState({});
     const staticData = useContext(StaticDataContext);
     //const locationData = useContext(LocationDataContext);
-
-    // this needs to useCallback, otherwise it will cause an infinite loop with useEffect
-    const fetchArrivals = useCallback(async (serviceNo, stop) => {
-        console.log(`Fetching data for Stop: ${stop}, ServiceNo: ${serviceNo}`);
-
-        const response = await fetch(
-            `https://arrivelah2.busrouter.sg/?id=${stop}`
-        );
-        const myJson = await response.json();
-
-        const arrivalObj = myJson.services.find(
-            (service) => service.no === serviceNo
-        );
-
-        setArrivalObject(arrivalObj);
-        setNextTime(Date.parse(arrivalObj.next.time));
-    }, []);
-
-    // on mount, fetch new arrival data, then setInterval to regularly repeat
-    useEffect(() => {
-        fetchArrivals(props.data.serviceNo, props.data.stop);
-        const intervalId = setInterval(() => {
-            // TODO: this should be in try-catch
-            // and per LTA's recommendation, if there's no arrival data, then should check whether bus is in operation,
-            //      and display a message accordingly ("Not in operation" or "no arrival data" )
-            fetchArrivals(props.data.serviceNo, props.data.stop);
-        }, 60000);
-        return () => clearInterval(intervalId);
-    }, [fetchArrivals, props.data.serviceNo, props.data.stop]);
 
     // on mount, start a timer to keep updating current time
     useEffect(() => {
@@ -67,20 +39,6 @@ const ArrivalCard = (props) => {
         }
     }, [staticData, props.data.stop]);
 
-    // create the HTML element to display time until arrival or an error message
-    function timeDisplay() {
-        if (nextTime) {
-            if (nextTime > currentTime) {
-                return (
-                    <p>{Math.floor((nextTime - currentTime) / 60000)} mins</p>
-                );
-            } else {
-                return <p>0 mins</p>;
-            }
-        }
-        return <p>No arrival data</p>;
-    }
-
     return (
         <Card onClick={(event) => props.handleCardOnClick(event, props.index)}>
             <CardActionArea>
@@ -91,7 +49,7 @@ const ArrivalCard = (props) => {
                     <h2>
                         {busStop.RoadName} - {busStop.Description}
                     </h2>
-                    {timeDisplay()}
+                    {timeDisplay(arrivalObject.next?.time, currentTime)}
                     {/* {busStop.Latitude}
                     {busStop.Longitude} */}
                     <p>Distance: {busStop.distanceFromUser} km</p>
