@@ -8,7 +8,7 @@ import NavBar from "./components/NavBar";
 import StaticDataContext from "./components/StaticDataContext";
 import LocationDataContext from "./components/LocationDataContext";
 
-import haversineDistance from "./haversine-distnace";
+import haversineDistance from "./haversine-distance";
 
 function App() {
     const [staticData, setStaticData] = useState({
