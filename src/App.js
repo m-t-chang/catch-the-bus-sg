@@ -37,7 +37,7 @@ function App() {
         fetchStaticData();
     }, []);
 
-    // on moount, get user location data
+    // on mount, get user location data
     // Note: this happens only once. If the user moves around (e.g. walking), he/she should refresh the page to pull new location data
     useEffect(() => {
         console.log("Fetching user geolocation...");
