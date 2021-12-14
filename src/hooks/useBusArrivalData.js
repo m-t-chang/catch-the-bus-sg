@@ -12,7 +12,10 @@ defined here.
 */
 
 // create the HTML element to display time until arrival or an error message
-export function timeDisplay(nextTime, currentTime) {
+export function timeDisplay(nextTimeAsString, currentTime) {
+    // the LTA API gives times in a string; it must be parsed to Unix time first
+    const nextTime = Date.parse(nextTimeAsString);
+
     if (nextTime) {
         if (nextTime > currentTime) {
             return <p>{Math.floor((nextTime - currentTime) / 60000)} mins</p>;
@@ -38,8 +41,6 @@ export default function useBusArrivalData(serviceNoInFocus, stopInFocus) {
         const arrivalObj = myJson.services.find(
             (service) => service.no === serviceNo
         );
-
-        arrivalObj.next.time = Date.parse(arrivalObj.next.time);
 
         setBusArrival(arrivalObj);
     }, []);
