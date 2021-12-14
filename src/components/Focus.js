@@ -1,18 +1,22 @@
-import React from "react";
+import React, { useContext } from "react";
 import Button from "@mui/material/Button";
 
 import useBusArrivalData, { timeDisplay } from "../hooks/useBusArrivalData";
 import useBusStopData from "../hooks/useBusStopData";
 import useCurrentTime from "../hooks/useCurrentTime";
+import useWalkingDistance from "../hooks/useWalkingDistance";
+
+import LocationDataContext from "../contexts/LocationDataContext";
 
 const Focus = (props) => {
-    // https://api.openrouteservice.org/v2/directions/foot-walking?api_key=your-api-key&start=8.681495,49.41461&end=8.687872,49.420318
-
-    // when bus stop and Location both load, calculate the walking distance
-
     const busArrival = useBusArrivalData(props.data.serviceNo, props.data.stop);
     const busStop = useBusStopData(props.data.stop);
     const currentTime = useCurrentTime();
+    const locationData = useContext(LocationDataContext);
+    const walkingDistance = useWalkingDistance(locationData, {
+        lat: busStop.Latitude,
+        lon: busStop.Longitude,
+    });
 
     return (
         <div>
