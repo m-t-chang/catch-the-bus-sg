@@ -3,35 +3,15 @@ import Button from "@mui/material/Button";
 import Card from "@mui/material/Card";
 import { CardActions, CardContent, CardActionArea } from "@mui/material";
 
-// contexts
-import StaticDataContext from "./StaticDataContext";
-//import LocationDataContext from "./LocationDataContext";
-
 // hooks
 import useBusArrivalData, { timeDisplay } from "../hooks/useBusArrivalData";
+import useBusStopData from "../hooks/useBusStopData";
 import useCurrentTime from "../hooks/useCurrentTime";
 
 const ArrivalCard = (props) => {
     const currentTime = useCurrentTime();
     const busArrival = useBusArrivalData(props.data.serviceNo, props.data.stop);
-    const [busStop, setBusStop] = useState({});
-    const staticData = useContext(StaticDataContext);
-    //const locationData = useContext(LocationDataContext);
-
-    // when staticData loads, get the bus stop data
-    useEffect(() => {
-        if (staticData.busStops) {
-            // console.log(staticData.busStops);
-            // console.log(!staticData.busStops);
-            setBusStop(
-                staticData.busStops.data.find(
-                    (stop) => stop.BusStopCode === props.data.stop
-                )
-            );
-        } else {
-            setBusStop({});
-        }
-    }, [staticData, props.data.stop]);
+    const busStop = useBusStopData(props.data.stop);
 
     return (
         <Card onClick={(event) => props.handleCardOnClick(event, props.index)}>

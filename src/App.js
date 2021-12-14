@@ -5,8 +5,8 @@ import Body from "./components/Body";
 import LoadingScreen from "./components/LoadingScreen";
 import NavBar from "./components/NavBar";
 
-import StaticDataContext from "./components/StaticDataContext";
-import LocationDataContext from "./components/LocationDataContext";
+import StaticDataContext from "./contexts/StaticDataContext";
+import LocationDataContext from "./contexts/LocationDataContext";
 
 import haversineDistance from "./haversine-distance";
 

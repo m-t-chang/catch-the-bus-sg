@@ -3,8 +3,8 @@ import React, { useState, useContext, useEffect } from "react";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
-import StaticDataContext from "./StaticDataContext";
-import LocationDataContext from "./LocationDataContext";
+import StaticDataContext from "../contexts/StaticDataContext";
+import LocationDataContext from "../contexts/LocationDataContext";
 
 const AddServiceStop = (props) => {
     const [serviceInput, setServiceInput] = useState(null);
