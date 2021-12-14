@@ -8,11 +8,12 @@ import ArrivalCard from "./ArrivalCard";
 const Browse = (props) => {
     return (
         <Stack spacing={2} sx={{ padding: 2 }}>
-            {props.data.map((elem) => (
+            {props.data.map((elem, index) => (
                 <ArrivalCard
                     id={elem.serviceNo + "-" + elem.stop}
                     key={elem.serviceNo + "-" + elem.stop}
                     data={elem}
+                    index={index}
                     handleCardOnClick={props.handleCardOnClick}
                     handleCardRemove={props.handleCardRemove}
                 />

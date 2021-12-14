@@ -4,7 +4,7 @@ import Card from "@mui/material/Card";
 import { CardActions, CardContent, CardActionArea } from "@mui/material";
 
 import StaticDataContext from "./StaticDataContext";
-import LocationDataContext from "./LocationDataContext";
+//import LocationDataContext from "./LocationDataContext";
 
 const ArrivalCard = (props) => {
     const [nextTime, setNextTime] = useState("");
@@ -12,7 +12,7 @@ const ArrivalCard = (props) => {
     const [arrivalObject, setArrivalObject] = useState({});
     const [busStop, setBusStop] = useState({});
     const staticData = useContext(StaticDataContext);
-    const locationData = useContext(LocationDataContext);
+    //const locationData = useContext(LocationDataContext);
 
     // this needs to useCallback, otherwise it will cause an infinite loop with useEffect
     const fetchArrivals = useCallback(async (serviceNo, stop) => {
@@ -65,7 +65,7 @@ const ArrivalCard = (props) => {
         } else {
             setBusStop({});
         }
-    }, [staticData]);
+    }, [staticData, props.data.stop]);
 
     // create the HTML element to display time until arrival or an error message
     function timeDisplay() {
@@ -82,7 +82,7 @@ const ArrivalCard = (props) => {
     }
 
     return (
-        <Card onClick={props.handleCardOnClick}>
+        <Card onClick={(event) => props.handleCardOnClick(event, props.index)}>
             <CardActionArea>
                 <CardContent>
                     <h2>

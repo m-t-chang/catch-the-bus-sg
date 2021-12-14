@@ -5,8 +5,8 @@ import Focus from "./Focus";
 const Body = () => {
     const [activeView, setActiveView] = useState("browse");
 
-    // TODO: consider renaming "arrivalData" to "trackedServiceStops", since it no longer contains the duration data
-    const [arrivalData, setArrivalData] = useState([
+    const [focusViewIndex, setFocusViewIndex] = useState(null);
+    const [serviceStops, setServiceStops] = useState([
         {
             serviceNo: "185",
             stop: "28469",
@@ -21,15 +21,20 @@ const Body = () => {
         },
     ]);
 
-    function handleCardOnClick(event) {
+    // this function navigates the user to the "Focus" screen
+    function handleCardOnClick(event, index) {
+        // don't run if user clicked one of the other buttons on the card
         if (event.target.tagName.toLowerCase() === "button") return;
+
+        console.log("user clicked on card index ", index);
+        setFocusViewIndex(index);
         setActiveView("focus");
     }
 
     // id = `${serviceNo}-${stop}`
     function handleCardRemove(id) {
-        setArrivalData(
-            arrivalData.filter(
+        setServiceStops(
+            serviceStops.filter(
                 (elem) => `${elem.serviceNo}-${elem.stop}` !== id
             )
         );
@@ -59,8 +64,8 @@ const Body = () => {
         // }
 
         // success
-        setArrivalData([
-            ...arrivalData,
+        setServiceStops([
+            ...serviceStops,
             { serviceNo: serviceNoObj.ServiceNo, stop: stopObj.BusStopCode },
         ]);
         console.log("Add succeeded");
@@ -68,7 +73,7 @@ const Body = () => {
 
     let content = (
         <Browse
-            data={arrivalData}
+            data={serviceStops}
             handleCardOnClick={handleCardOnClick}
             handleCardRemove={handleCardRemove}
             handleFormSubmit={handleFormSubmit}
@@ -77,7 +82,7 @@ const Body = () => {
     if (activeView === "focus") {
         content = (
             <Focus
-                data={arrivalData[0]}
+                data={serviceStops[focusViewIndex]}
                 handleFocusOnClick={handleFocusOnClick}
             />
         );
