@@ -1,10 +1,13 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect, useCallback } from "react";
 import { useParams, Link } from "react-router-dom";
 import Button from "@mui/material/Button";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Switch from "@mui/material/Switch";
 
-import useBusArrivalData, { timeDisplay } from "../hooks/useBusArrivalData";
+import useBusArrivalData, {
+    timeDisplay,
+    getArrivalDurationMins,
+} from "../hooks/useBusArrivalData";
 import useBusStopData from "../hooks/useBusStopData";
 import useCurrentTime from "../hooks/useCurrentTime";
 import useWalkingRoute, {
@@ -16,7 +19,15 @@ import LocationDataContext from "../contexts/LocationDataContext";
 
 // testing notification. Code from https://developer.mozilla.org/en-US/docs/Web/API/notification
 // note that this will ask for notification permission and then display the notification
-function notifyMe() {
+function notifyMe(titleMsg = "Hello World!", body = "Notification template") {
+    const title = `${titleMsg}  |  Catch the Bus SG`;
+    const options = {
+        body: body,
+        // BUG: icon and image don't work, not sure why
+        icon: "logo192.png",
+        image: "logo192.png",
+    };
+
     // Let's check if the browser supports notifications
     if (!("Notification" in window)) {
         alert("This browser does not support desktop notification");
@@ -25,7 +36,7 @@ function notifyMe() {
     // Let's check whether notification permissions have already been granted
     // If so, create a notification
     else if (Notification.permission === "granted") {
-        var notification = new Notification("Hi there!");
+        new Notification(title, options);
         console.log("notification given");
     }
 
@@ -34,10 +45,12 @@ function notifyMe() {
         Notification.requestPermission().then(function (permission) {
             // If the user accepts, let's create a notification
             if (permission === "granted") {
-                var notification = new Notification("Hi there!");
+                new Notification(title, options);
                 console.log("notification given");
             }
         });
+    } else {
+        console.warn("Notifications are disabled.");
     }
 }
 
@@ -65,18 +78,27 @@ const Focus = (props) => {
         busStop.Latitude
     );
 
+    const getWhenToLeaveMins = useCallback(() => {
+        const nextTime = Date.parse(busArrival?.next?.time);
+
+        console.log("current time", currentTime);
+        console.log("next time", nextTime);
+        console.log("walking time", getWalkingTimeMins(walkingRoute));
+
+        return (
+            (nextTime - currentTime) / 60000 - getWalkingTimeMins(walkingRoute)
+        );
+    }, [busArrival, currentTime, walkingRoute]);
+
     function displayWhenToLeave() {
         const nextTime = Date.parse(busArrival?.next?.time);
-        const whenToLeaveMins =
-            Math.floor((nextTime - currentTime) / 60000) -
-            getWalkingTimeMins(walkingRoute);
-
+        // the IF statements mimic the timeDisplay from busArrival. It will handle when busArrival is not loaded.
         if (nextTime) {
             if (nextTime > currentTime) {
                 return (
                     <p>
                         To catch the next bus, start walking in{" "}
-                        {whenToLeaveMins.toFixed(0)} mins
+                        {Math.floor(getWhenToLeaveMins())} mins
                     </p>
                 );
             } else {
@@ -87,10 +109,32 @@ const Focus = (props) => {
         return <p>Don't know when to leave; No arrival data</p>;
     }
 
-    const handleChange = (event) => {
-        setNotificationEnabled(event.target.checked);
-        notifyMe();
-    };
+    // notification system
+    useEffect(() => {
+        console.log("Checking whether to display notification or not");
+
+        console.log("when to leave is: ", getWhenToLeaveMins());
+
+        if (notificationEnabled && getWhenToLeaveMins() <= 0) {
+            notifyMe(
+                "Time to go!",
+                `Service no. ${routerParams.serviceNo} at ${
+                    busStop?.Description
+                } arrives in ${getArrivalDurationMins(
+                    busArrival?.next?.time,
+                    currentTime
+                )}.`
+            );
+            setNotificationEnabled(false);
+        }
+    }, [
+        getWhenToLeaveMins,
+        notificationEnabled,
+        routerParams,
+        busStop,
+        busArrival,
+        currentTime,
+    ]);
 
     return (
         <div>
@@ -124,7 +168,9 @@ const Focus = (props) => {
                 control={
                     <Switch
                         checked={notificationEnabled}
-                        onChange={handleChange}
+                        onChange={(event) =>
+                            setNotificationEnabled(event.target.checked)
+                        }
                     />
                 }
                 label="Notify me when it's time to start walking to catch the bus"

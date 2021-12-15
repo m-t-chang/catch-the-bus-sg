@@ -15,15 +15,36 @@ defined here.
 export function timeDisplay(nextTimeAsString, currentTime) {
     // the LTA API gives times in a string; it must be parsed to Unix time first
     const nextTime = Date.parse(nextTimeAsString);
+    const duration = Math.floor((nextTime - currentTime) / 60000);
 
     if (nextTime) {
-        if (nextTime > currentTime) {
-            return <p>{Math.floor((nextTime - currentTime) / 60000)} mins</p>;
+        if (duration > 1) {
+            return <p>{duration} mins</p>;
+        } else if (duration === 1) {
+            return <p>{duration} min</p>;
         } else {
             return <p>0 mins</p>;
         }
     }
     return <p>No arrival data</p>;
+}
+
+// this is used in notification
+// it's the same as above, but returns it as plain text, without being in a component.
+export function getArrivalDurationMins(nextTimeAsString, currentTime) {
+    const nextTime = Date.parse(nextTimeAsString);
+    const duration = Math.floor((nextTime - currentTime) / 60000);
+
+    if (nextTime) {
+        if (duration > 1) {
+            return `${duration} mins`;
+        } else if (duration === 1) {
+            return `${duration} min`;
+        } else {
+            return "0 mins";
+        }
+    }
+    return "No arrival data";
 }
 
 export default function useBusArrivalData(serviceNoInFocus, stopInFocus) {
