@@ -1,7 +1,13 @@
 import React from "react";
-import Button from "@mui/material/Button";
-import Card from "@mui/material/Card";
-import { CardActions, CardContent, CardActionArea } from "@mui/material";
+import {
+    Button,
+    Card,
+    CardActions,
+    CardContent,
+    CardActionArea,
+    Typography,
+} from "@mui/material";
+import DirectionsBusIcon from "@mui/icons-material/DirectionsBus";
 
 // hooks
 import useBusArrivalData, { timeDisplay } from "../hooks/useBusArrivalData";
@@ -14,21 +20,21 @@ const ArrivalCard = (props) => {
     const busStop = useBusStopData(props.data.stop);
 
     return (
-        <Card onClick={(event) => props.handleCardOnClick(event, props.index)}>
+        <Card
+            variant="elevation"
+            onClick={(event) => props.handleCardOnClick(event, props.index)}
+        >
             <CardActionArea>
                 <CardContent>
-                    <h2>
-                        {props.data.serviceNo} at Stop: {props.data.stop}
-                    </h2>
-                    <h2>
+                    <DirectionsBusIcon />
+                    <Typography variant="h3">{props.data.serviceNo}</Typography>
+                    <Typography variant="h6">
                         {busStop?.RoadName} - {busStop?.Description}
-                    </h2>
+                    </Typography>
                     {timeDisplay(busArrival?.next?.time, currentTime)}
-                    {/* {busStop.Latitude}
-                    {busStop.Longitude} */}
-                    <p>Distance: {busStop?.distanceFromUser} km</p>
-                    {/* myLAT: {locationData.lat}
-                    myLON: {locationData.lon} */}
+                    <Typography variant="body1">
+                        {busStop?.distanceFromUser?.toFixed(1)} km away
+                    </Typography>
                 </CardContent>
             </CardActionArea>
             <CardActions>

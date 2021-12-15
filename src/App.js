@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Container from "@mui/material/Container";
+import { createTheme } from "@mui/material/styles";
+import { teal, red } from "@mui/material/colors";
 
 import Body from "./components/Body";
 import LoadingScreen from "./components/LoadingScreen";
@@ -11,6 +13,14 @@ import LocationDataContext from "./contexts/LocationDataContext";
 import haversineDistance from "./haversine-distance";
 
 import staticData from "./data/bus-reference-data.json";
+import { ThemeProvider } from "@emotion/react";
+
+const theme = createTheme({
+    palette: {
+        primary: teal,
+        secondary: red,
+    },
+});
 
 function App() {
     const [locationData, setLocationData] = useState({
@@ -60,12 +70,14 @@ function App() {
     return (
         <StaticDataContext.Provider value={staticData}>
             <LocationDataContext.Provider value={locationData}>
-                <Container maxWidth="xs" sx={{ padding: 0 }}>
-                    <LoadingScreen />
+                <ThemeProvider theme={theme}>
+                    <Container maxWidth="xs" sx={{ padding: 0 }}>
+                        <LoadingScreen />
 
-                    <NavBar />
-                    <Body />
-                </Container>
+                        <NavBar />
+                        <Body />
+                    </Container>
+                </ThemeProvider>
             </LocationDataContext.Provider>
         </StaticDataContext.Provider>
     );

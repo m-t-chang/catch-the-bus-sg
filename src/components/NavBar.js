@@ -30,7 +30,9 @@ export default function NavBar() {
             onKeyDown={() => setDrawerOpen(false)}
         >
             <List>
-                <ListItem>Catch the Bus SG</ListItem>
+                <ListItem>
+                    <Typography variant="h6">Catch the Bus SG</Typography>
+                </ListItem>
                 <ListItem button>
                     <ListItemIcon>
                         <InboxIcon />

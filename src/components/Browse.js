@@ -7,7 +7,7 @@ import ArrivalCard from "./ArrivalCard";
 
 const Browse = (props) => {
     return (
-        <Stack spacing={2} sx={{ padding: 2 }}>
+        <Stack spacing={1} sx={{ padding: 1 }}>
             {props.data.map((elem, index) => (
                 <ArrivalCard
                     id={elem.serviceNo + "-" + elem.stop}
