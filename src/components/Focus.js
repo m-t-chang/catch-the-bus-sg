@@ -1,4 +1,5 @@
 import React, { useContext } from "react";
+import { useParams } from "react-router-dom";
 import Button from "@mui/material/Button";
 
 import useBusArrivalData, { timeDisplay } from "../hooks/useBusArrivalData";
@@ -11,8 +12,14 @@ import useWalkingRoute, {
 import LocationDataContext from "../contexts/LocationDataContext";
 
 const Focus = (props) => {
-    const busArrival = useBusArrivalData(props.data.serviceNo, props.data.stop);
-    const busStop = useBusStopData(props.data.stop);
+    const routerParams = useParams();
+    const busArrival = useBusArrivalData(
+        routerParams.serviceNo,
+        routerParams.stop
+    );
+    const busStop = useBusStopData(routerParams.stop);
+    // const busArrival = useBusArrivalData(props.data.serviceNo, props.data.stop);
+    // const busStop = useBusStopData(props.data.stop);
     const currentTime = useCurrentTime();
     const locationData = useContext(LocationDataContext);
 
@@ -34,7 +41,8 @@ const Focus = (props) => {
             </Button>
             <h2>== FOCUS - One Stop, One Service CARD ==</h2>
             <h2>
-                {props.data.serviceNo} at Stop: {props.data.stop}
+                {/* {props.data.serviceNo} at Stop: {props.data.stop} */}
+                {routerParams.serviceNo} at Stop: {routerParams.stop}
             </h2>
             <h2>
                 {busStop?.RoadName} - {busStop?.Description}

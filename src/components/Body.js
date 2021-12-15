@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Route, Switch } from "react-router-dom";
 import Browse from "./Browse";
 import Focus from "./Focus";
 
@@ -88,7 +89,27 @@ const Body = () => {
         );
     }
 
-    return <div>{content}</div>;
+    // return <div>{content}</div>;
+
+    // with routing
+    return (
+        <Switch>
+            <Route exact path="/">
+                <Browse
+                    data={serviceStops}
+                    handleCardOnClick={handleCardOnClick}
+                    handleCardRemove={handleCardRemove}
+                    handleFormSubmit={handleFormSubmit}
+                />
+            </Route>
+            <Route path="/:stop/:serviceNo">
+                <Focus
+                    data={serviceStops[focusViewIndex]}
+                    handleFocusOnClick={handleFocusOnClick}
+                />
+            </Route>
+        </Switch>
+    );
 };
 
 export default Body;
