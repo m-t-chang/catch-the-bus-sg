@@ -72,13 +72,13 @@ export function displayWalkingDistance(walkingRoute) {
                 km
             </p>
             <p>
-                Time by walking:{" "}
-                {(
-                    walkingRoute?.features?.[0]?.properties?.summary?.duration /
-                    60
-                ).toFixed(0)}{" "}
+                Time by walking: {getWalkingTimeMins(walkingRoute).toFixed(0)}{" "}
                 mins
             </p>
         </>
     );
+}
+
+export function getWalkingTimeMins(walkingRoute) {
+    return walkingRoute?.features?.[0]?.properties?.summary?.duration / 60;
 }
