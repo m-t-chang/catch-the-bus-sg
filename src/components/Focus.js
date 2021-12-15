@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import Button from "@mui/material/Button";
 
 import useBusArrivalData, { timeDisplay } from "../hooks/useBusArrivalData";
@@ -36,7 +36,10 @@ const Focus = (props) => {
 
     return (
         <div>
-            <Button variant="outlined" onClick={props.handleFocusOnClick}>
+            {/* <Button variant="outlined" onClick={props.handleFocusOnClick}>
+                Go Back
+            </Button> */}
+            <Button component={Link} to="/" variant="outlined">
                 Go Back
             </Button>
             <h2>== FOCUS - One Stop, One Service CARD ==</h2>

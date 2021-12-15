@@ -41,9 +41,9 @@ const Body = () => {
         );
     }
 
-    function handleFocusOnClick() {
-        setActiveView("browse");
-    }
+    // function handleFocusOnClick() {
+    //     setActiveView("browse");
+    // }
 
     function handleFormSubmit(event, serviceNoObj, stopObj) {
         event.preventDefault();
@@ -72,22 +72,22 @@ const Body = () => {
         console.log("Add succeeded");
     }
 
-    let content = (
-        <Browse
-            data={serviceStops}
-            handleCardOnClick={handleCardOnClick}
-            handleCardRemove={handleCardRemove}
-            handleFormSubmit={handleFormSubmit}
-        />
-    );
-    if (activeView === "focus") {
-        content = (
-            <Focus
-                data={serviceStops[focusViewIndex]}
-                handleFocusOnClick={handleFocusOnClick}
-            />
-        );
-    }
+    // let content = (
+    //     <Browse
+    //         data={serviceStops}
+    //         handleCardOnClick={handleCardOnClick}
+    //         handleCardRemove={handleCardRemove}
+    //         handleFormSubmit={handleFormSubmit}
+    //     />
+    // );
+    // if (activeView === "focus") {
+    //     content = (
+    //         <Focus
+    //             data={serviceStops[focusViewIndex]}
+    //             handleFocusOnClick={handleFocusOnClick}
+    //         />
+    //     );
+    // }
 
     // return <div>{content}</div>;
 
@@ -103,10 +103,11 @@ const Body = () => {
                 />
             </Route>
             <Route path="/:stop/:serviceNo">
-                <Focus
+                {/* <Focus
                     data={serviceStops[focusViewIndex]}
                     handleFocusOnClick={handleFocusOnClick}
-                />
+                /> */}
+                <Focus />
             </Route>
         </Switch>
     );
