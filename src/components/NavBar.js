@@ -47,6 +47,8 @@ export default function NavBar() {
                     <ListItemText primary={"Spam"} />
                 </ListItem>
             </List>
+            Github Link
+            <br />
             Location: {JSON.stringify(locationData)}
         </Box>
     );
