@@ -42,12 +42,6 @@ function notifyMe() {
 }
 
 function App() {
-    // const [staticData, setStaticData] = useState(busReferenceData);
-    // //     busServices: "",
-    // //     busRoutes: "",
-    // //     busStops: "",
-    // // });
-
     const [locationData, setLocationData] = useState({
         lat: "",
         lon: "",

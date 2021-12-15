@@ -1,12 +1,11 @@
 import React, { useState } from "react";
-import { Route, Switch } from "react-router-dom";
+import { Route, Switch, useHistory } from "react-router-dom";
 import Browse from "./Browse";
 import Focus from "./Focus";
 
 const Body = () => {
-    const [activeView, setActiveView] = useState("browse");
+    const history = useHistory();
 
-    const [focusViewIndex, setFocusViewIndex] = useState(null);
     const [serviceStops, setServiceStops] = useState([
         {
             serviceNo: "185",
@@ -28,8 +27,10 @@ const Body = () => {
         if (event.target.tagName.toLowerCase() === "button") return;
 
         console.log("user clicked on card index ", index);
-        setFocusViewIndex(index);
-        setActiveView("focus");
+
+        history.push(
+            `/${serviceStops[index].stop}/${serviceStops[index].serviceNo}`
+        );
     }
 
     // id = `${serviceNo}-${stop}`
@@ -40,10 +41,6 @@ const Body = () => {
             )
         );
     }
-
-    // function handleFocusOnClick() {
-    //     setActiveView("browse");
-    // }
 
     function handleFormSubmit(event, serviceNoObj, stopObj) {
         event.preventDefault();
@@ -72,26 +69,6 @@ const Body = () => {
         console.log("Add succeeded");
     }
 
-    // let content = (
-    //     <Browse
-    //         data={serviceStops}
-    //         handleCardOnClick={handleCardOnClick}
-    //         handleCardRemove={handleCardRemove}
-    //         handleFormSubmit={handleFormSubmit}
-    //     />
-    // );
-    // if (activeView === "focus") {
-    //     content = (
-    //         <Focus
-    //             data={serviceStops[focusViewIndex]}
-    //             handleFocusOnClick={handleFocusOnClick}
-    //         />
-    //     );
-    // }
-
-    // return <div>{content}</div>;
-
-    // with routing
     return (
         <Switch>
             <Route exact path="/">
@@ -103,10 +80,6 @@ const Body = () => {
                 />
             </Route>
             <Route path="/:stop/:serviceNo">
-                {/* <Focus
-                    data={serviceStops[focusViewIndex]}
-                    handleFocusOnClick={handleFocusOnClick}
-                /> */}
                 <Focus />
             </Route>
         </Switch>
