@@ -24,8 +24,8 @@ function notifyMe(titleMsg = "Hello World!", body = "Notification template") {
     const options = {
         body: body,
         // BUG: icon and image don't work, not sure why
-        icon: "logo192.png",
-        image: "logo192.png",
+        icon: "../logo192.png",
+        image: "../logo192.png",
     };
 
     // Let's check if the browser supports notifications
