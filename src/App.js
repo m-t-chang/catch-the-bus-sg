@@ -10,6 +10,8 @@ import LocationDataContext from "./contexts/LocationDataContext";
 
 import haversineDistance from "./haversine-distance";
 
+import staticData from "./data/bus-reference-data.json";
+
 // testing notification. Code from https://developer.mozilla.org/en-US/docs/Web/API/notification
 function notifyMe() {
     // Let's check if the browser supports notifications
@@ -40,33 +42,16 @@ function notifyMe() {
 }
 
 function App() {
-    const [staticData, setStaticData] = useState({
-        busServices: "",
-        busRoutes: "",
-        busStops: "",
-    });
+    // const [staticData, setStaticData] = useState(busReferenceData);
+    // //     busServices: "",
+    // //     busRoutes: "",
+    // //     busStops: "",
+    // // });
 
     const [locationData, setLocationData] = useState({
         lat: "",
         lon: "",
     });
-
-    // on Mount, read in static bus data
-    // need to define another async function and run it b/c the useEffect function must be synchronous
-    useEffect(() => {
-        async function fetchStaticData() {
-            const res = await fetch("bus-reference-data.json", {
-                headers: {
-                    "Content-Type": "application/json",
-                    Accept: "application/json",
-                },
-            });
-            const LTADataMall = await res.json();
-
-            setStaticData(LTADataMall);
-        }
-        fetchStaticData();
-    }, []);
 
     // on mount, get user location data
     // Note: this happens only once. If the user moves around (e.g. walking), he/she should refresh the page to pull new location data
@@ -105,7 +90,7 @@ function App() {
         staticData.busStops.data.sort(
             (a, b) => a.distanceFromUser - b.distanceFromUser
         );
-    }, [staticData, locationData]);
+    }, [locationData]);
 
     return (
         <StaticDataContext.Provider value={staticData}>
