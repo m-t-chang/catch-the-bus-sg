@@ -6,6 +6,7 @@ import { teal, red } from "@mui/material/colors";
 import Body from "./components/Body";
 import LoadingScreen from "./components/LoadingScreen";
 import NavBar from "./components/NavBar";
+import Footer from "./components/Footer";
 
 import StaticDataContext from "./contexts/StaticDataContext";
 import LocationDataContext from "./contexts/LocationDataContext";
@@ -71,12 +72,13 @@ function App() {
         <StaticDataContext.Provider value={staticData}>
             <LocationDataContext.Provider value={locationData}>
                 <ThemeProvider theme={theme}>
+                    <NavBar />
                     <Container maxWidth="xs" sx={{ padding: 0 }}>
                         <LoadingScreen />
 
-                        <NavBar />
                         <Body />
                     </Container>
+                    <Footer />
                 </ThemeProvider>
             </LocationDataContext.Provider>
         </StaticDataContext.Provider>
