@@ -57,9 +57,9 @@ const ArrivalCard = (props) => {
                                 direction="row"
                                 alignItems="center"
                             >
-                                {/* <Grid item sx={{ paddingRight: 1.5 }}>
-                            <LocationOnIcon fontSize="small" />
-                        </Grid> */}
+                                <Grid item sx={{ paddingRight: 1.8 }}>
+                                    <LocationOnIcon fontSize="small" />
+                                </Grid>
                                 <Grid item>
                                     <Typography variant="body1">
                                         {busStop?.RoadName} -{" "}

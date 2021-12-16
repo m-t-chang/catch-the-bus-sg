@@ -18,7 +18,6 @@ const Browse = (props) => {
                     handleCardRemove={props.handleCardRemove}
                 />
             ))}
-            <Divider />
             <AddServiceStop handleFormSubmit={props.handleFormSubmit} />
         </Stack>
     );

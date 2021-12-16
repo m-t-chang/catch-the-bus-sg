@@ -1,10 +1,20 @@
 import { v4 as uuidv4 } from "uuid";
 import React, { useState, useContext, useEffect } from "react";
-import Button from "@mui/material/Button";
-import TextField from "@mui/material/TextField";
-import Autocomplete from "@mui/material/Autocomplete";
+import {
+    Typography,
+    Button,
+    TextField,
+    Autocomplete,
+    Box,
+    Card,
+    Grid,
+} from "@mui/material";
 import StaticDataContext from "../contexts/StaticDataContext";
 import LocationDataContext from "../contexts/LocationDataContext";
+import SearchIcon from "@mui/icons-material/Search";
+import AddIcon from "@mui/icons-material/Add";
+import DirectionsBusIcon from "@mui/icons-material/DirectionsBus";
+import LocationOnIcon from "@mui/icons-material/LocationOn";
 
 const AddServiceStop = (props) => {
     const [serviceInput, setServiceInput] = useState(null);
@@ -97,41 +107,48 @@ const AddServiceStop = (props) => {
     let busStopAutocomplete = "";
     if (staticData.busStops.data) {
         busStopAutocomplete = (
-            <Autocomplete
-                value={stopInput} // this matches the Options, in this case, an object
-                onChange={(event, newValue) => setStopInput(newValue)}
-                inputValue={stopInputText} //note that this is a string
-                onInputChange={(event, newInputValue) =>
-                    setStopInputText(newInputValue)
-                }
-                disablePortal
-                id="busStop-combo-box"
-                // options={staticData.busStops.data}
-                options={stopsOnRoute}
-                getOptionLabel={(option) =>
-                    option.RoadName
-                        ? `${option.RoadName} - ${option.Description}`
-                        : ""
-                }
-                // renderOption based on https://stackoverflow.com/questions/69395945/how-can-i-add-unique-keys-to-react-mui-autocomplete-component
-                renderOption={(props, option) => {
-                    return (
-                        <li {...props} key={uuidv4()}>
-                            {option.RoadName
+            <Grid container direction="row" alignItems="center">
+                <Grid item sx={{ color: "lightgray", paddingRight: 1.5 }}>
+                    <LocationOnIcon fontSize="medium" />
+                </Grid>
+                <Grid item sx={{ flexGrow: 1 }}>
+                    <Autocomplete
+                        value={stopInput} // this matches the Options, in this case, an object
+                        onChange={(event, newValue) => setStopInput(newValue)}
+                        inputValue={stopInputText} //note that this is a string
+                        onInputChange={(event, newInputValue) =>
+                            setStopInputText(newInputValue)
+                        }
+                        disablePortal
+                        id="busStop-combo-box"
+                        // options={staticData.busStops.data}
+                        options={stopsOnRoute}
+                        getOptionLabel={(option) =>
+                            option.RoadName
                                 ? `${option.RoadName} - ${option.Description}`
-                                : ""}
-                        </li>
-                    );
-                }}
-                renderInput={(params) => (
-                    <TextField
-                        {...params}
-                        required
-                        variant="outlined"
-                        label="Bus Stop"
+                                : ""
+                        }
+                        // renderOption based on https://stackoverflow.com/questions/69395945/how-can-i-add-unique-keys-to-react-mui-autocomplete-component
+                        renderOption={(props, option) => {
+                            return (
+                                <li {...props} key={uuidv4()}>
+                                    {option.RoadName
+                                        ? `${option.RoadName} - ${option.Description}`
+                                        : ""}
+                                </li>
+                            );
+                        }}
+                        renderInput={(params) => (
+                            <TextField
+                                {...params}
+                                required
+                                variant="filled"
+                                label="Bus Stop"
+                            />
+                        )}
                     />
-                )}
-            />
+                </Grid>
+            </Grid>
         );
     } else {
         busStopAutocomplete = (
@@ -152,40 +169,49 @@ const AddServiceStop = (props) => {
     let busServiceAutocomplete = "";
     if (staticData.busServices.data) {
         busServiceAutocomplete = (
-            <Autocomplete
-                value={serviceInput} // this matches the Options, in this case, an object
-                onChange={(event, newValue) => setServiceInput(newValue)}
-                inputValue={serviceInputText} //note that this is a string
-                onInputChange={(event, newInputValue) =>
-                    setServiceInputText(newInputValue)
-                }
-                disablePortal
-                id="busService-combo-box"
-                options={servicesAtStop}
-                getOptionLabel={(option) =>
-                    option.ServiceNo
-                        ? `${option.ServiceNo} - ${option.Direction}`
-                        : ""
-                }
-                // renderOption based on https://stackoverflow.com/questions/69395945/how-can-i-add-unique-keys-to-react-mui-autocomplete-component
-                renderOption={(props, option) => {
-                    return (
-                        <li {...props} key={uuidv4()}>
-                            {option.ServiceNo
+            <Grid container direction="row" alignItems="center">
+                <Grid item sx={{ color: "lightgray", paddingRight: 1.5 }}>
+                    <DirectionsBusIcon fontSize="medium" />
+                </Grid>
+                <Grid item sx={{ flexGrow: 1 }}>
+                    <Autocomplete
+                        value={serviceInput} // this matches the Options, in this case, an object
+                        onChange={(event, newValue) =>
+                            setServiceInput(newValue)
+                        }
+                        inputValue={serviceInputText} //note that this is a string
+                        onInputChange={(event, newInputValue) =>
+                            setServiceInputText(newInputValue)
+                        }
+                        disablePortal
+                        id="busService-combo-box"
+                        options={servicesAtStop}
+                        getOptionLabel={(option) =>
+                            option.ServiceNo
                                 ? `${option.ServiceNo} - ${option.Direction}`
-                                : ""}
-                        </li>
-                    );
-                }}
-                renderInput={(params) => (
-                    <TextField
-                        {...params}
-                        required
-                        variant="outlined"
-                        label="Bus Service No."
+                                : ""
+                        }
+                        // renderOption based on https://stackoverflow.com/questions/69395945/how-can-i-add-unique-keys-to-react-mui-autocomplete-component
+                        renderOption={(props, option) => {
+                            return (
+                                <li {...props} key={uuidv4()}>
+                                    {option.ServiceNo
+                                        ? `${option.ServiceNo} - ${option.Direction}`
+                                        : ""}
+                                </li>
+                            );
+                        }}
+                        renderInput={(params) => (
+                            <TextField
+                                {...params}
+                                required
+                                variant="filled"
+                                label="Bus Service No."
+                            />
+                        )}
                     />
-                )}
-            />
+                </Grid>
+            </Grid>
         );
     } else {
         busServiceAutocomplete = (
@@ -205,8 +231,18 @@ const AddServiceStop = (props) => {
     }
 
     return (
-        <div>
-            == ADD NEW ==
+        <Card variant="outlined" sx={{ padding: 1 }}>
+            <Grid container direction="row" alignItems="center">
+                <Grid item sx={{ paddingRight: 1 }}>
+                    <SearchIcon fontSize="medium" />
+                </Grid>
+                <Grid item>
+                    <Typography variant="h6">
+                        Search for Bus Service and Stop
+                    </Typography>
+                </Grid>
+            </Grid>
+
             <form
                 onSubmit={(event) => {
                     props.handleFormSubmit(event, serviceInput, stopInput);
@@ -214,18 +250,38 @@ const AddServiceStop = (props) => {
                     setStopInput("");
                 }}
             >
-                {busStopAutocomplete}
-                {busServiceAutocomplete}
-                {JSON.stringify(serviceInput)}
+                <Grid
+                    container
+                    direction="row"
+                    alignItems="stretch"
+                    justifyContent="flex-end"
+                    spacing={1}
+                    padding={1}
+                >
+                    <Grid item xs={12}>
+                        {busServiceAutocomplete}
+                    </Grid>
+                    <Grid item xs={12}>
+                        {busStopAutocomplete}
+                    </Grid>
+
+                    <Grid item>
+                        <Button
+                            variant="contained"
+                            type="submit"
+                            startIcon={<AddIcon />}
+                        >
+                            Add to List
+                        </Button>
+                    </Grid>
+                </Grid>
+            </form>
+            {/* {JSON.stringify(serviceInput)}
                 {stopInputText}
                 {serviceInputText}
                 myLAT: {locationData.lat}
-                myLON: {locationData.lon}
-                <Button variant="contained" type="submit">
-                    Track This Stop
-                </Button>
-            </form>
-        </div>
+                myLON: {locationData.lon} */}
+        </Card>
     );
 };
 
