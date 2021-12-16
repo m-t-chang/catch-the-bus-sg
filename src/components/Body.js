@@ -9,15 +9,19 @@ const Body = () => {
     // default bus stops from :https://thesmartlocal.com/read/cool-bus-stops/
     const [serviceStops, setServiceStops] = useState([
         {
+            serviceNo: "145",
+            stop: "05421",
+        },
+        {
+            serviceNo: "359",
+            stop: "77171",
+        },
+        {
+            serviceNo: "32",
+            stop: "13059",
+        },
+        {
             serviceNo: "185",
-            stop: "28469",
-        },
-        {
-            serviceNo: "502",
-            stop: "03217",
-        },
-        {
-            serviceNo: "187",
             stop: "28469",
         },
     ]);

@@ -73,7 +73,7 @@ function App() {
             <LocationDataContext.Provider value={locationData}>
                 <ThemeProvider theme={theme}>
                     <NavBar />
-                    <Container maxWidth="xs" sx={{ padding: 0 }}>
+                    <Container maxWidth="sm" sx={{ padding: 0 }}>
                         <LoadingScreen />
 
                         <Body />
