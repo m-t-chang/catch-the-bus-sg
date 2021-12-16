@@ -108,6 +108,11 @@ const Focus = (props) => {
         );
     }
 
+    // scroll to top on load
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, []);
+
     // notifications
     useEffect(() => {
         if (notificationEnabled && getWhenToLeaveMins() <= 0) {
@@ -120,7 +125,9 @@ const Focus = (props) => {
                     currentTime
                 )}.`
             );
-            setNotificationEnabled(false);
+            setTimeout(function () {
+                setNotificationEnabled(false);
+            }, 1000);
         }
     }, [
         getWhenToLeaveMins,
@@ -268,11 +275,11 @@ const Focus = (props) => {
                                 control={
                                     <Switch
                                         checked={notificationEnabled}
-                                        onChange={(event) =>
+                                        onChange={(event) => {
                                             setNotificationEnabled(
                                                 event.target.checked
-                                            )
-                                        }
+                                            );
+                                        }}
                                     />
                                 }
                                 label={
