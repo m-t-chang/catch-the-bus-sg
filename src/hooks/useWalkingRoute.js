@@ -1,3 +1,4 @@
+import { Typography } from "@mui/material";
 import { useState, useEffect, useCallback } from "react";
 
 export default function useWalkingRoute(
@@ -63,18 +64,18 @@ export default function useWalkingRoute(
 export function displayWalkingDistance(walkingRoute) {
     return (
         <>
-            <p>
+            <Typography>
                 Distance by walking:{" "}
                 {(
                     walkingRoute?.features?.[0]?.properties?.summary?.distance /
                     1000
-                ).toFixed(2)}{" "}
+                ).toFixed(1)}{" "}
                 km
-            </p>
-            <p>
+            </Typography>
+            <Typography>
                 Time by walking: {getWalkingTimeMins(walkingRoute).toFixed(0)}{" "}
                 mins
-            </p>
+            </Typography>
         </>
     );
 }

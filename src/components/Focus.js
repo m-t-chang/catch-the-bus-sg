@@ -50,7 +50,7 @@ function notifyMe(titleMsg = "Hello World!", body = "Notification template") {
     // If so, create a notification
     else if (Notification.permission === "granted") {
         new Notification(title, options);
-        console.log("notification given");
+        console.log(`Notification given: ${titleMsg}  |  ${body}`);
     }
 
     // Otherwise, we need to ask the user for permission
@@ -59,7 +59,7 @@ function notifyMe(titleMsg = "Hello World!", body = "Notification template") {
             // If the user accepts, let's create a notification
             if (permission === "granted") {
                 new Notification(title, options);
-                console.log("notification given");
+                console.log(`Notification given: ${titleMsg}  |  ${body}`);
             }
         });
     } else {
@@ -93,11 +93,6 @@ const Focus = (props) => {
 
     const getWhenToLeaveMins = useCallback(() => {
         const nextTime = Date.parse(busArrival?.next?.time);
-
-        console.log("current time", currentTime);
-        console.log("next time", nextTime);
-        console.log("walking time", getWalkingTimeMins(walkingRoute));
-
         return (
             (nextTime - currentTime) / 60000 - getWalkingTimeMins(walkingRoute)
         );
@@ -109,25 +104,27 @@ const Focus = (props) => {
         if (nextTime) {
             if (nextTime > currentTime) {
                 return (
-                    <p>
+                    <Typography>
                         To catch the next bus, start walking in{" "}
                         {Math.floor(getWhenToLeaveMins())} mins
-                    </p>
+                    </Typography>
                 );
             } else {
-                return <p>When to leave: Bus is already arriving</p>;
+                return (
+                    <Typography>
+                        When to leave: Bus is already arriving
+                    </Typography>
+                );
             }
         }
 
-        return <p>Don't know when to leave; No arrival data</p>;
+        return (
+            <Typography>Don't know when to leave; No arrival data</Typography>
+        );
     }
 
-    // notification system
+    // notifications
     useEffect(() => {
-        console.log("Checking whether to display notification or not");
-
-        console.log("when to leave is: ", getWhenToLeaveMins());
-
         if (notificationEnabled && getWhenToLeaveMins() <= 0) {
             notifyMe(
                 "Time to go!",
@@ -151,7 +148,7 @@ const Focus = (props) => {
 
     return (
         <>
-            <Box sx={{ marginTop: 1 }}>
+            <Box sx={{ marginTop: 1, marginLeft: 1 }}>
                 <Button
                     component={Link}
                     to="/"
@@ -265,22 +262,27 @@ const Focus = (props) => {
                                 </Typography>
                             </Grid>
                         </Grid>
-                        <p>Distance: {busStop?.distanceFromUser} km</p>
+                        <Typography variant="body1">
+                            Distance: {busStop?.distanceFromUser?.toFixed(1)} km
+                        </Typography>
                         {displayWalkingDistance(walkingRoute)}
                         {displayWhenToLeave()}
-                        <FormControlLabel
-                            control={
-                                <Switch
-                                    checked={notificationEnabled}
-                                    onChange={(event) =>
-                                        setNotificationEnabled(
-                                            event.target.checked
-                                        )
-                                    }
-                                />
-                            }
-                            label="Notify me when it's time to start walking to catch the bus"
-                        />
+                        <br />
+                        <Box sx={{ paddingLeft: 2 }}>
+                            <FormControlLabel
+                                control={
+                                    <Switch
+                                        checked={notificationEnabled}
+                                        onChange={(event) =>
+                                            setNotificationEnabled(
+                                                event.target.checked
+                                            )
+                                        }
+                                    />
+                                }
+                                label="Notify me when it's time to go"
+                            />
+                        </Box>
                     </CardContent>
                 </Card>
             </Stack>
