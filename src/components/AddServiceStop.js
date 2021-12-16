@@ -125,7 +125,7 @@ const AddServiceStop = (props) => {
                         options={stopsOnRoute}
                         getOptionLabel={(option) =>
                             option.RoadName
-                                ? `${option.RoadName} - ${option.Description}`
+                                ? `${option.RoadName} - ${option.Description} - ${option.BusStopCode}`
                                 : ""
                         }
                         // renderOption based on https://stackoverflow.com/questions/69395945/how-can-i-add-unique-keys-to-react-mui-autocomplete-component
@@ -133,7 +133,7 @@ const AddServiceStop = (props) => {
                             return (
                                 <li {...props} key={uuidv4()}>
                                     {option.RoadName
-                                        ? `${option.RoadName} - ${option.Description}`
+                                        ? `${option.RoadName} - ${option.Description} - ${option.BusStopCode}`
                                         : ""}
                                 </li>
                             );

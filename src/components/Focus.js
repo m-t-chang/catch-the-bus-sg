@@ -14,6 +14,7 @@ import {
 } from "@mui/material";
 import DirectionsBusIcon from "@mui/icons-material/DirectionsBus";
 import DirectionsWalkIcon from "@mui/icons-material/DirectionsWalk";
+import LocationOnIcon from "@mui/icons-material/LocationOn";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 
@@ -190,16 +191,19 @@ const Focus = (props) => {
                                     direction="row"
                                     alignItems="center"
                                 >
-                                    {/* <Grid item sx={{ paddingRight: 1.5 }}>
-                            <LocationOnIcon fontSize="small" />
-                        </Grid> */}
+                                    <Grid item sx={{ paddingRight: 1.8 }}>
+                                        <LocationOnIcon fontSize="small" />
+                                    </Grid>
                                     <Grid item>
                                         <Typography variant="body1">
                                             {busStop?.RoadName} -{" "}
                                             {busStop?.Description}
+                                            <br />
+                                            {routerParams.stop}
                                         </Typography>
                                     </Grid>
                                 </Grid>
+
                                 {/* <Typography variant="body1">
                             {busStop?.distanceFromUser?.toFixed(1)} km away
                         </Typography> */}
@@ -280,7 +284,11 @@ const Focus = (props) => {
                                         }
                                     />
                                 }
-                                label="Notify me when it's time to go"
+                                label={
+                                    <Typography sx={{ fontWeight: "bold" }}>
+                                        Notify me when it's time to go
+                                    </Typography>
+                                }
                             />
                         </Box>
                     </CardContent>

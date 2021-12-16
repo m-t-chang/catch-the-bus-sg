@@ -64,6 +64,8 @@ const ArrivalCard = (props) => {
                                     <Typography variant="body1">
                                         {busStop?.RoadName} -{" "}
                                         {busStop?.Description}
+                                        <br />
+                                        {props.data.stop}
                                     </Typography>
                                 </Grid>
                             </Grid>

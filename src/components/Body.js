@@ -6,6 +6,7 @@ import Focus from "./Focus";
 const Body = () => {
     const history = useHistory();
 
+    // default bus stops from :https://thesmartlocal.com/read/cool-bus-stops/
     const [serviceStops, setServiceStops] = useState([
         {
             serviceNo: "185",
