@@ -1,5 +1,3 @@
-import { useState, useEffect, useCallback } from "react";
-
 /*
 Some background...
 
@@ -11,22 +9,36 @@ contains the necessary data. It will also self-update on an interval,
 defined here.
 */
 
+import { useState, useEffect, useCallback } from "react";
+import { Grid, Typography } from "@mui/material";
+
 // create the HTML element to display time until arrival or an error message
 export function timeDisplay(nextTimeAsString, currentTime) {
+    if (!nextTimeAsString) return <p>No arrival data</p>;
+
     // the LTA API gives times in a string; it must be parsed to Unix time first
     const nextTime = Date.parse(nextTimeAsString);
-    const duration = Math.floor((nextTime - currentTime) / 60000);
+    let duration = Math.floor((nextTime - currentTime) / 60000);
 
-    if (nextTime) {
-        if (duration > 1) {
-            return <p>{duration} mins</p>;
-        } else if (duration === 1) {
-            return <p>{duration} min</p>;
-        } else {
-            return <p>0 mins</p>;
-        }
-    }
-    return <p>No arrival data</p>;
+    let minsText = "mins";
+    if (duration === 1) minsText = "min";
+    if (duration < 0) duration = 0;
+
+    return (
+        <Grid
+            container
+            direction="column"
+            alignItems="center"
+            justifyContent="center"
+        >
+            <Grid item>
+                <Typography variant="h3">{duration}</Typography>
+            </Grid>
+            <Grid item>
+                <Typography variant="body1">{minsText}</Typography>
+            </Grid>
+        </Grid>
+    );
 }
 
 // this is used in notification

@@ -1,8 +1,21 @@
 import React, { useContext, useState, useEffect, useCallback } from "react";
 import { useParams, Link } from "react-router-dom";
-import Button from "@mui/material/Button";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Switch from "@mui/material/Switch";
+import {
+    Box,
+    Button,
+    Card,
+    CardContent,
+    Stack,
+    Divider,
+    Switch,
+    FormControlLabel,
+    Grid,
+    Typography,
+} from "@mui/material";
+import DirectionsBusIcon from "@mui/icons-material/DirectionsBus";
+import DirectionsWalkIcon from "@mui/icons-material/DirectionsWalk";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import AccessTimeIcon from "@mui/icons-material/AccessTime";
 
 import useBusArrivalData, {
     timeDisplay,
@@ -137,45 +150,141 @@ const Focus = (props) => {
     ]);
 
     return (
-        <div>
-            {/* <Button variant="outlined" onClick={props.handleFocusOnClick}>
-                Go Back
-            </Button> */}
-            <Button component={Link} to="/" variant="outlined">
-                Go Back
-            </Button>
-            <h2>== FOCUS - One Stop, One Service CARD ==</h2>
-            <h2>
-                {/* {props.data.serviceNo} at Stop: {props.data.stop} */}
-                {routerParams.serviceNo} at Stop: {routerParams.stop}
-            </h2>
-            <h2>
-                {busStop?.RoadName} - {busStop?.Description}
-            </h2>
-            {timeDisplay(busArrival?.next?.time, currentTime)}
-            <p>Distance: {busStop?.distanceFromUser} km</p>
-            <h3>Later Arrivals</h3>
-            {timeDisplay(busArrival?.next2?.time, currentTime)}
-            {timeDisplay(busArrival?.next3?.time, currentTime)}
-            {/* <h3>DEBUG: Arrival object</h3>
-            {JSON.stringify(busArrival)}
-            <h3>DEBUG: walkingRoute object</h3>
-            {JSON.stringify(walkingRoute)} */}
-            <br />
-            {displayWalkingDistance(walkingRoute)}
-            {displayWhenToLeave()}
-            <FormControlLabel
-                control={
-                    <Switch
-                        checked={notificationEnabled}
-                        onChange={(event) =>
-                            setNotificationEnabled(event.target.checked)
-                        }
-                    />
-                }
-                label="Notify me when it's time to start walking to catch the bus"
-            />
-        </div>
+        <>
+            <Box sx={{ marginTop: 1 }}>
+                <Button
+                    component={Link}
+                    to="/"
+                    variant="outlined"
+                    startIcon={<ArrowBackIcon />}
+                >
+                    Back to All Arrivals
+                </Button>
+            </Box>
+
+            <Stack spacing={1} sx={{ padding: 1 }}>
+                <Card>
+                    <CardContent>
+                        <Grid
+                            container
+                            direction="row"
+                            justifyContent="space-between"
+                        >
+                            <Grid item>
+                                <Grid
+                                    item
+                                    container
+                                    direction="row"
+                                    alignItems="center"
+                                >
+                                    <Grid item sx={{ paddingRight: 1 }}>
+                                        <DirectionsBusIcon fontSize="medium" />
+                                    </Grid>
+                                    <Grid item>
+                                        <Typography variant="h3">
+                                            {routerParams.serviceNo}
+                                        </Typography>
+                                    </Grid>
+                                </Grid>
+
+                                <Grid
+                                    item
+                                    container
+                                    direction="row"
+                                    alignItems="center"
+                                >
+                                    {/* <Grid item sx={{ paddingRight: 1.5 }}>
+                            <LocationOnIcon fontSize="small" />
+                        </Grid> */}
+                                    <Grid item>
+                                        <Typography variant="body1">
+                                            {busStop?.RoadName} -{" "}
+                                            {busStop?.Description}
+                                        </Typography>
+                                    </Grid>
+                                </Grid>
+                                {/* <Typography variant="body1">
+                            {busStop?.distanceFromUser?.toFixed(1)} km away
+                        </Typography> */}
+                            </Grid>
+                            <Grid item>
+                                {timeDisplay(
+                                    busArrival?.next?.time,
+                                    currentTime
+                                )}
+                            </Grid>
+                        </Grid>
+                        <br />
+                        <Divider />
+                        <br />
+                        <Grid
+                            container
+                            direction="row"
+                            alignItems="flex-start"
+                            justifyContent="space-between"
+                        >
+                            <Grid
+                                item
+                                container
+                                direction="row"
+                                alignItems="flex-end"
+                                xs="auto"
+                            >
+                                <Grid item sx={{ paddingRight: 1 }}>
+                                    <AccessTimeIcon fontSize="small" />
+                                </Grid>
+                                <Grid item>
+                                    <Typography variant="overline">
+                                        More Arrivals
+                                    </Typography>
+                                </Grid>
+                            </Grid>
+                            <Grid item>
+                                {timeDisplay(
+                                    busArrival?.next2?.time,
+                                    currentTime
+                                )}
+                            </Grid>
+                            <Grid item>
+                                {timeDisplay(
+                                    busArrival?.next3?.time,
+                                    currentTime
+                                )}
+                            </Grid>
+                        </Grid>
+                        <br />
+                        <Divider />
+                        <br />
+                        <Grid container direction="row" alignItems="flex-end">
+                            <Grid item sx={{ paddingRight: 1 }}>
+                                <DirectionsWalkIcon fontSize="small" />
+                            </Grid>
+                            <Grid item>
+                                <Typography variant="overline">
+                                    Getting There
+                                </Typography>
+                            </Grid>
+                        </Grid>
+                        <p>Distance: {busStop?.distanceFromUser} km</p>
+                        {displayWalkingDistance(walkingRoute)}
+                        {displayWhenToLeave()}
+                        <FormControlLabel
+                            control={
+                                <Switch
+                                    checked={notificationEnabled}
+                                    onChange={(event) =>
+                                        setNotificationEnabled(
+                                            event.target.checked
+                                        )
+                                    }
+                                />
+                            }
+                            label="Notify me when it's time to start walking to catch the bus"
+                        />
+                    </CardContent>
+                </Card>
+            </Stack>
+        </>
     );
 };
 

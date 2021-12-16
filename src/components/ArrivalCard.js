@@ -6,8 +6,11 @@ import {
     CardContent,
     CardActionArea,
     Typography,
+    Grid,
 } from "@mui/material";
 import DirectionsBusIcon from "@mui/icons-material/DirectionsBus";
+import LocationOnIcon from "@mui/icons-material/LocationOn";
+import DeleteIcon from "@mui/icons-material/Delete";
 
 // hooks
 import useBusArrivalData, { timeDisplay } from "../hooks/useBusArrivalData";
@@ -26,21 +29,60 @@ const ArrivalCard = (props) => {
         >
             <CardActionArea>
                 <CardContent>
-                    <DirectionsBusIcon />
-                    <Typography variant="h3">{props.data.serviceNo}</Typography>
-                    <Typography variant="h6">
-                        {busStop?.RoadName} - {busStop?.Description}
-                    </Typography>
-                    {timeDisplay(busArrival?.next?.time, currentTime)}
-                    <Typography variant="body1">
-                        {busStop?.distanceFromUser?.toFixed(1)} km away
-                    </Typography>
+                    <Grid
+                        container
+                        direction="row"
+                        justifyContent="space-between"
+                    >
+                        <Grid item>
+                            <Grid
+                                item
+                                container
+                                direction="row"
+                                alignItems="center"
+                            >
+                                <Grid item sx={{ paddingRight: 1 }}>
+                                    <DirectionsBusIcon fontSize="medium" />
+                                </Grid>
+                                <Grid item>
+                                    <Typography variant="h3">
+                                        {props.data.serviceNo}
+                                    </Typography>
+                                </Grid>
+                            </Grid>
+
+                            <Grid
+                                item
+                                container
+                                direction="row"
+                                alignItems="center"
+                            >
+                                {/* <Grid item sx={{ paddingRight: 1.5 }}>
+                            <LocationOnIcon fontSize="small" />
+                        </Grid> */}
+                                <Grid item>
+                                    <Typography variant="body1">
+                                        {busStop?.RoadName} -{" "}
+                                        {busStop?.Description}
+                                    </Typography>
+                                </Grid>
+                            </Grid>
+                            {/* <Typography variant="body1">
+                            {busStop?.distanceFromUser?.toFixed(1)} km away
+                        </Typography> */}
+                        </Grid>
+                        <Grid item>
+                            {timeDisplay(busArrival?.next?.time, currentTime)}
+                        </Grid>
+                    </Grid>
                 </CardContent>
             </CardActionArea>
             <CardActions>
                 <Button
+                    startIcon={<DeleteIcon />}
                     variant="text"
                     onClick={() => props.handleCardRemove(props.id)}
+                    sx={{ marginLeft: "auto" }}
                 >
                     Remove
                 </Button>
