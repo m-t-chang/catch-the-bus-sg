@@ -1,6 +1,5 @@
 import React from "react";
 import Stack from "@mui/material/Stack";
-import Divider from "@mui/material/Divider";
 
 import AddServiceStop from "./AddServiceStop";
 import ArrivalCard from "./ArrivalCard";

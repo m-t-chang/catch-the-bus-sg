@@ -5,12 +5,10 @@ import {
     Button,
     TextField,
     Autocomplete,
-    Box,
     Card,
     Grid,
 } from "@mui/material";
 import StaticDataContext from "../contexts/StaticDataContext";
-import LocationDataContext from "../contexts/LocationDataContext";
 import SearchIcon from "@mui/icons-material/Search";
 import AddIcon from "@mui/icons-material/Add";
 import DirectionsBusIcon from "@mui/icons-material/DirectionsBus";
@@ -22,7 +20,6 @@ const AddServiceStop = (props) => {
     const [serviceInputText, setServiceInputText] = useState("");
     const [stopInputText, setStopInputText] = useState("");
     const staticData = useContext(StaticDataContext);
-    const locationData = useContext(LocationDataContext);
 
     // define a state for the options that are appearing... it's not static!
     // need one for stops and services each
@@ -276,11 +273,6 @@ const AddServiceStop = (props) => {
                     </Grid>
                 </Grid>
             </form>
-            {/* {JSON.stringify(serviceInput)}
-                {stopInputText}
-                {serviceInputText}
-                myLAT: {locationData.lat}
-                myLON: {locationData.lon} */}
         </Card>
     );
 };
