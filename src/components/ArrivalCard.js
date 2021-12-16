@@ -7,6 +7,7 @@ import {
     CardActionArea,
     Typography,
     Grid,
+    Box,
 } from "@mui/material";
 import DirectionsBusIcon from "@mui/icons-material/DirectionsBus";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
@@ -45,9 +46,20 @@ const ArrivalCard = (props) => {
                                     <DirectionsBusIcon fontSize="medium" />
                                 </Grid>
                                 <Grid item>
-                                    <Typography variant="h3">
-                                        {props.data.serviceNo}
-                                    </Typography>
+                                    <Box
+                                        sx={{
+                                            backgroundColor: "#55dd33",
+                                            paddingTop: 0.5,
+                                            paddingBottom: 0.5,
+                                            paddingRight: 1.5,
+                                            paddingLeft: 1.5,
+                                            borderRadius: 2,
+                                        }}
+                                    >
+                                        <Typography variant="h4">
+                                            {props.data.serviceNo}
+                                        </Typography>
+                                    </Box>
                                 </Grid>
                             </Grid>
 

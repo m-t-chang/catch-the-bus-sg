@@ -163,9 +163,20 @@ const Focus = (props) => {
                                         <DirectionsBusIcon fontSize="medium" />
                                     </Grid>
                                     <Grid item>
-                                        <Typography variant="h3">
-                                            {routerParams.serviceNo}
-                                        </Typography>
+                                        <Box
+                                            sx={{
+                                                backgroundColor: "#55dd33",
+                                                paddingTop: 0.5,
+                                                paddingBottom: 0.5,
+                                                paddingRight: 1.5,
+                                                paddingLeft: 1.5,
+                                                borderRadius: 2,
+                                            }}
+                                        >
+                                            <Typography variant="h4">
+                                                {routerParams.serviceNo}
+                                            </Typography>
+                                        </Box>
                                     </Grid>
                                 </Grid>
 
