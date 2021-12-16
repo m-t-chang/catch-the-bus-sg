@@ -31,7 +31,7 @@ import useWalkingRoute, {
 
 import LocationDataContext from "../contexts/LocationDataContext";
 
-// testing notification. Code from https://developer.mozilla.org/en-US/docs/Web/API/notification
+// display notification
 // note that this will ask for notification permission and then display the notification
 function notifyMe(titleMsg = "Hello World!", body = "Notification template") {
     const title = `${titleMsg}  |  Catch the Bus SG`;
@@ -52,31 +52,6 @@ function notifyMe(titleMsg = "Hello World!", body = "Notification template") {
             });
         }
     });
-
-    // // Let's check if the browser supports notifications
-    // if (!("Notification" in window)) {
-    //     alert("This browser does not support desktop notification");
-    // }
-
-    // // Let's check whether notification permissions have already been granted
-    // // If so, create a notification
-    // else if (Notification.permission === "granted") {
-    //     new Notification(title, options);
-    //     console.log(`Notification given: ${titleMsg}  |  ${body}`);
-    // }
-
-    // // Otherwise, we need to ask the user for permission
-    // else if (Notification.permission !== "denied") {
-    //     Notification.requestPermission().then(function (permission) {
-    //         // If the user accepts, let's create a notification
-    //         if (permission === "granted") {
-    //             new Notification(title, options);
-    //             console.log(`Notification given: ${titleMsg}  |  ${body}`);
-    //         }
-    //     });
-    // } else {
-    //     console.warn("Notifications are disabled.");
-    // }
 }
 
 const Focus = (props) => {
@@ -86,8 +61,6 @@ const Focus = (props) => {
         routerParams.stop
     );
     const busStop = useBusStopData(routerParams.stop);
-    // const busArrival = useBusArrivalData(props.data.serviceNo, props.data.stop);
-    // const busStop = useBusStopData(props.data.stop);
     const currentTime = useCurrentTime();
     const locationData = useContext(LocationDataContext);
     const [notificationEnabled, setNotificationEnabled] = useState(false);
@@ -214,10 +187,6 @@ const Focus = (props) => {
                                         </Typography>
                                     </Grid>
                                 </Grid>
-
-                                {/* <Typography variant="body1">
-                            {busStop?.distanceFromUser?.toFixed(1)} km away
-                        </Typography> */}
                             </Grid>
                             <Grid item>
                                 {timeDisplay(
