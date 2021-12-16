@@ -42,30 +42,41 @@ function notifyMe(titleMsg = "Hello World!", body = "Notification template") {
         image: "../logo192.png",
     };
 
-    // Let's check if the browser supports notifications
-    if (!("Notification" in window)) {
-        alert("This browser does not support desktop notification");
-    }
+    // notifications via service worker
+    // source: https://stackoverflow.com/questions/31512504/html5-notification-not-working-in-mobile-chrome
+    navigator.serviceWorker.register("../sw.js");
+    Notification.requestPermission(function (result) {
+        if (result === "granted") {
+            navigator.serviceWorker.ready.then(function (registration) {
+                registration.showNotification(title, options);
+            });
+        }
+    });
 
-    // Let's check whether notification permissions have already been granted
-    // If so, create a notification
-    else if (Notification.permission === "granted") {
-        new Notification(title, options);
-        console.log(`Notification given: ${titleMsg}  |  ${body}`);
-    }
+    // // Let's check if the browser supports notifications
+    // if (!("Notification" in window)) {
+    //     alert("This browser does not support desktop notification");
+    // }
 
-    // Otherwise, we need to ask the user for permission
-    else if (Notification.permission !== "denied") {
-        Notification.requestPermission().then(function (permission) {
-            // If the user accepts, let's create a notification
-            if (permission === "granted") {
-                new Notification(title, options);
-                console.log(`Notification given: ${titleMsg}  |  ${body}`);
-            }
-        });
-    } else {
-        console.warn("Notifications are disabled.");
-    }
+    // // Let's check whether notification permissions have already been granted
+    // // If so, create a notification
+    // else if (Notification.permission === "granted") {
+    //     new Notification(title, options);
+    //     console.log(`Notification given: ${titleMsg}  |  ${body}`);
+    // }
+
+    // // Otherwise, we need to ask the user for permission
+    // else if (Notification.permission !== "denied") {
+    //     Notification.requestPermission().then(function (permission) {
+    //         // If the user accepts, let's create a notification
+    //         if (permission === "granted") {
+    //             new Notification(title, options);
+    //             console.log(`Notification given: ${titleMsg}  |  ${body}`);
+    //         }
+    //     });
+    // } else {
+    //     console.warn("Notifications are disabled.");
+    // }
 }
 
 const Focus = (props) => {
