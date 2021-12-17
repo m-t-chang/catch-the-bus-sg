@@ -67,7 +67,7 @@ React design
         -   Filtering autocomplete options based on the other input
         -   Slower at first, but able to make more complicated
     -   Material UI. It saved me time with built in stuff:
-        -   Autocomplete
+        -   Autocomplete (built in validation. Just provide options. More powerful than HTML autocomplete)
         -   Cool animations in buttons
         -   Built in icons
         -   Drawer menu
