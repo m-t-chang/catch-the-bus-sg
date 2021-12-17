@@ -78,6 +78,8 @@ React design
         -   Logic is, if walk time equals arrival time, AND notification is enabled, then push it
         -   Notification itself is simple to implement, with title, body, and image
         -   Favorite part, love to just toggle it and see the notification. Satisfying.
+    -   API pagination
+        -   static bus data has pagination, I have a Node.JS script to download the whole database, outside of the web app.
     -   Coding approach, process
         -   Approach was write code that works, refactor as needed
         -   Also, static first, then data. Build one component at a time.
