@@ -62,10 +62,16 @@ React design
 ## Lessons learned
 
 -   Most interesting
+
     -   Reuse old code
+
         -   API calls and data cleaning
         -   Filtering autocomplete options based on the other input
-        -   Slower at first, but able to make more complicated
+
+        -   Thoughts on JS vs React
+            -   Slower at first, but able to make more complicated
+            -   vanilla JS gets very complicated with increasing App complexity
+
     -   Material UI. It saved me time with built in stuff:
         -   Autocomplete (built in validation. Just provide options. More powerful than HTML autocomplete)
         -   Cool animations in buttons
@@ -86,13 +92,7 @@ React design
 
 ## Known Issues
 
--   User is allowed to add a new stop without filling in both Bus Stop and Bus Service No. fields.
--   Inputs are not validated.
--   Bug: if the user enters a value into Bus Stop before the code finishes finding the closest bus stops, the process doesn't complete and the Bus Stops never get sorted by distance.
--   Some parts of the website are not translated to both languages.
--   The website should inform the user when no bus arrival time is retrieved (e.g. the service is not currently running) instead of simply not displaying a number.
--   There is no UI element to indicate that the arrival time cards can be clicked on to reveal more information.
--   The data source has information that is not included, such as the direction of the bus service, terminal stop, hours of service, capacity, etc.
+-   Many
 
 ## Credits
 
